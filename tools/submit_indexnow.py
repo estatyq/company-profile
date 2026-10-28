@@ -4,17 +4,34 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import pathlib
-import sys
+import re
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT))
+PUBLIC_BASE_URL = os.getenv(
+    "PUBLIC_BASE_URL", "https://xcombine.xyz"
+).rstrip("/")
 
-from build import INDEXNOW_KEY, PUBLIC_BASE_URL  # noqa: E402
+
+def indexnow_key() -> str:
+    configured = os.getenv("INDEXNOW_KEY", "").strip()
+    if configured:
+        return configured
+    markers = [
+        path
+        for path in (ROOT / "site").glob("*.txt")
+        if re.fullmatch(r"[a-fA-F0-9]{32}\.txt", path.name)
+    ]
+    if len(markers) != 1:
+        raise RuntimeError(
+            "Expected exactly one 32-character IndexNow key file in site/"
+        )
+    return markers[0].stem
 
 
 def public_urls() -> list[str]:
@@ -28,11 +45,12 @@ def public_urls() -> list[str]:
 
 
 def submit(endpoint: str, urls: list[str]) -> None:
+    key = indexnow_key()
     payload = json.dumps(
         {
             "host": "xcombine.xyz",
-            "key": INDEXNOW_KEY,
-            "keyLocation": f"{PUBLIC_BASE_URL}/{INDEXNOW_KEY}.txt",
+            "key": key,
+            "keyLocation": f"{PUBLIC_BASE_URL}/{key}.txt",
             "urlList": urls,
         }
     ).encode("utf-8")
