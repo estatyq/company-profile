@@ -364,6 +364,7 @@
       }
     };
 
+    setText(".mark .submark", text.brand_submark);
     const coverChip = document.querySelector(".cover .chip");
     if (coverChip && typeof text.cover_chip === "string") {
       coverChip.innerHTML = `<span class="dot"></span>${escapeHtml(text.cover_chip)}`;
@@ -380,6 +381,9 @@
     setText(".cover .sub", text.cover_sub);
     setText(".cover .lead", text.cover_lead);
     setText(".cover .products > .label", text.cover_products_label);
+    setText(".cover [data-cover-cta-primary]", text.cover_cta_primary);
+    setText(".cover [data-cover-cta-secondary]", text.cover_cta_secondary);
+    setText(".cover [data-cover-trust]", text.cover_trust);
 
     setEyebrow(".p2 .top .eyebrow", text.p2_eyebrow);
     const aboutTitle = document.querySelector(".p2 .head h2");
@@ -1164,7 +1168,7 @@
         }),
       ),
       pageBreak(),
-      heading(text.p2_title_a),
+      heading(`${text.p2_title_a} ${text.p2_title_b}`),
       paragraph(text.p2_lead, {
         size: 22,
         color: slate,

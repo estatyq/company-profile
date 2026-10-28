@@ -53,12 +53,16 @@ SESSION_SECRET_FILE = DATA_DIR / ".session_secret"
 BACKUP_DIR = DATA_DIR / "backups"
 
 TEXT_FIELDS = (
+    "brand_submark",
     "cover_chip",
     "cover_eyebrow",
     "cover_title_a",
     "cover_title_b",
     "cover_sub",
     "cover_lead",
+    "cover_cta_primary",
+    "cover_cta_secondary",
+    "cover_trust",
     "cover_products_label",
     "p2_eyebrow",
     "p2_title_a",

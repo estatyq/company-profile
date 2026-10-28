@@ -149,7 +149,10 @@ def host(url):
 
 def brand_mark(t):
     if BRAND_NAME:
-        return f'<div class="mark">{LOGO}<span class="brand-name">{e(BRAND_NAME)}</span><span class="submark">digital agency</span></div>'
+        return (
+            f'<div class="mark">{LOGO}<span class="brand-name">{e(BRAND_NAME)}</span>'
+            f'<span class="submark">{e(t.get("brand_submark", "software product studio"))}</span></div>'
+        )
     return f'<div class="mark">{LOGO}<span>{e(t["descriptor"])}</span></div>'
 
 
@@ -201,6 +204,11 @@ def page_cover(t, lang, img_prefix="../../assets/web/"):
     <h1 class="h1{long_cls}">{e(t["cover_title_a"])}<br><span class="grad">{e(t["cover_title_b"])}</span></h1>
     <div class="sub">{e(t["cover_sub"])}</div>
     <p class="lead">{e(t["cover_lead"])}</p>
+    <div class="cover-actions">
+      <a class="cover-button primary" href="#contact"><span data-cover-cta-primary>{e(t.get("cover_cta_primary", "Discuss your idea"))}</span>{icon("out")}</a>
+      <a class="cover-button secondary" href="#products"><span data-cover-cta-secondary>{e(t.get("cover_cta_secondary", "Explore products"))}</span></a>
+    </div>
+    <div class="cover-trust"><span class="dot"></span><span data-cover-trust>{e(t.get("cover_trust", "Built for real operations. Designed to evolve."))}</span></div>
   </div>
   <div class="collage">
     <div class="frame f1"><div class="bar"><i></i><i></i><i></i><span>rieltix.com · catalog</span></div>
@@ -356,7 +364,7 @@ def page_contact(t, page_no, total):
         )
         contacts += f'<a class="contact" href="{href}">{inner}</a>' if href else f'<div class="contact">{inner}</div>'
     return f"""
-<section class="page p6">{top}
+<section class="page p6" id="contact">{top}
   <div class="title"><h2 class="h2">{e(t["p6_title"])}</h2></div>
   <div class="steps">{steps}</div>
   <div class="bottom">
@@ -500,6 +508,21 @@ def render_web_site(lang):
         "areaServed": "Worldwide",
         "knowsLanguage": list(LANGUAGES),
         "serviceType": [service[1] for service in t["services"]],
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": t["p2_problems_label"],
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": title,
+                        "description": body,
+                    },
+                }
+                for title, body in t["p2_problems"]
+            ],
+        },
     }
     schema_json = json.dumps(
         organization_schema, ensure_ascii=False

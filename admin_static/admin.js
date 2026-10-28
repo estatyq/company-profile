@@ -23,6 +23,7 @@
     {
       title: "Главный экран",
       fields: [
+        ["brand_submark", "Подпись рядом с логотипом"],
         ["cover_chip", "Плашка над заголовком"],
         ["cover_eyebrow", "Подпись в правом верхнем углу"],
         ["cover_products_label", "Подпись к продуктам"],
@@ -30,6 +31,9 @@
         ["cover_title_b", "Заголовок — акцентная строка"],
         ["cover_sub", "Подзаголовок", false, true],
         ["cover_lead", "Вводный текст", true],
+        ["cover_cta_primary", "Главная кнопка"],
+        ["cover_cta_secondary", "Вторая кнопка"],
+        ["cover_trust", "Подпись под кнопками"],
       ],
     },
     {

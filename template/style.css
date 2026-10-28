@@ -150,7 +150,7 @@ a { color: inherit; text-decoration: none; }
 .phone img { display: block; width: 100%; border-radius: 28px; }
 
 /* ================= PAGE 1 — COVER ================= */
-.cover .left { position: absolute; left: var(--pad-x); top: 132px; width: 610px; z-index: 4; }
+.cover .left { position: absolute; left: var(--pad-x); top: 112px; width: 630px; z-index: 4; }
 .chip {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 7px 14px 7px 10px; border-radius: 999px;
@@ -158,15 +158,35 @@ a { color: inherit; text-decoration: none; }
   font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
 }
 .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px rgba(34, 211, 238, 0.9); }
-.cover .h1 { margin-top: 26px; font-size: 66px; }
-.cover .h1.long { font-size: 60px; }
+.cover .h1 { margin-top: 18px; font-size: 60px; }
+.cover .h1.long { font-size: 54px; }
 .cover .sub {
-  margin-top: 26px; font-family: "Geist Mono", monospace; font-size: 13.5px; letter-spacing: 0.06em;
+  margin-top: 18px; font-family: "Geist Mono", monospace; font-size: 13px; letter-spacing: 0.055em;
   color: #cfe2ff; text-transform: uppercase;
 }
-.cover .lead { margin-top: 18px; max-width: 540px; }
+.cover .lead { margin-top: 12px; max-width: 600px; font-size: 16px; line-height: 1.45; }
+.cover-actions { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+.cover-button {
+  min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 0 17px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--line-2);
+}
+.cover-button.primary {
+  color: #04101f;
+  border-color: transparent;
+  background: linear-gradient(135deg, #6aa8ff, #22d3ee);
+  box-shadow: 0 9px 28px rgba(34, 211, 238, 0.2);
+}
+.cover-button.secondary { color: #d7e5f8; background: rgba(255, 255, 255, 0.035); }
+.cover-button svg { width: 14px; height: 14px; }
+.cover-trust {
+  display: flex; align-items: center; gap: 8px; margin-top: 10px;
+  color: var(--dim); font-family: "Geist Mono", monospace; font-size: 10.5px;
+  letter-spacing: 0.035em;
+}
+.cover-trust .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); }
 .cover .products {
-  position: absolute; left: var(--pad-x); bottom: 64px; z-index: 4;
+  position: absolute; left: var(--pad-x); bottom: 34px; z-index: 4;
 }
 .cover .products .row { display: flex; gap: 12px; margin-top: 12px; }
 .pill {
