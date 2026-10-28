@@ -10,12 +10,13 @@
 }
 
 .web-bar {
-  width: min(1420px, calc(100% - 36px));
+  width: min(1560px, calc(100% - 24px));
   min-height: 68px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 16px;
+  flex-wrap: nowrap;
   color: #d6e0ee;
 }
 
@@ -28,7 +29,7 @@
 
 .web-brand .brand-lockup {
   display: block;
-  width: 122px;
+  width: 152px;
   height: auto;
 }
 
@@ -36,10 +37,19 @@
   display: flex;
   align-items: center;
   gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.site-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .site-nav a {
-  padding: 8px 10px;
+  flex: 0 0 auto;
+  padding: 8px;
   border-radius: 8px;
   color: #8d9aae;
   font-size: 11.5px;
@@ -57,6 +67,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
+  flex: none;
 }
 
 .nav-contact {
@@ -102,23 +113,34 @@
 }
 
 .web-footer {
-  width: min(1280px, calc(100% - 32px));
+  width: min(1420px, calc(100% - 32px));
   margin: 26px auto 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 28px;
-  padding: 26px 28px;
+  padding: 22px 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  background: #09111e;
+  border-radius: 18px;
+  background:
+    radial-gradient(520px 150px at 100% 0%, rgba(49, 223, 213, 0.08), transparent 72%),
+    linear-gradient(135deg, #0a1422, #07101b);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
   color: #e8eff9;
 }
 
+.footer-copy {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
 .web-footer p {
-  margin: 6px 0 0;
+  max-width: 680px;
+  margin: 0;
   color: #8492a6;
   font-size: 12.5px;
+  line-height: 1.55;
 }
 
 .footer-kicker {
@@ -132,36 +154,66 @@
 .footer-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 9px;
   flex: none;
 }
 
-.footer-actions button {
-  min-height: 38px;
+.footer-action {
+  min-height: 42px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 12px;
+  gap: 9px;
+  flex: 0 0 auto;
+  padding: 5px 13px 5px 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 9px;
+  border-radius: 11px;
   color: #c8d5e6;
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035);
   cursor: pointer;
-  font: 550 11.5px "Geist", "Segoe UI", sans-serif;
+  font: 600 11.5px/1 "Geist", "Segoe UI", sans-serif;
+  white-space: nowrap;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
 }
 
-.footer-actions button:hover {
+.footer-action:hover {
+  border-color: rgba(255, 255, 255, 0.22);
   color: #fff;
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.075);
 }
 
-.footer-actions svg {
+.footer-action-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  border-radius: 8px;
+  color: #8fc4ff;
+  background: rgba(59, 115, 241, 0.14);
+}
+
+.footer-action-icon svg {
   width: 15px;
   height: 15px;
+  flex: none;
 }
 
-.footer-actions #edit-profile {
+.footer-action-primary {
+  color: #eaf5ff;
+  border-color: rgba(49, 223, 213, 0.25);
+  background: linear-gradient(135deg, rgba(59, 115, 241, 0.22), rgba(49, 223, 213, 0.12));
+}
+
+.footer-action-primary .footer-action-icon {
+  color: #dffefa;
+  background: rgba(49, 223, 213, 0.17);
+}
+
+.footer-action-manage {
   color: #7f8da1;
+  background: transparent;
 }
 
 .prod .name a.product-action {
@@ -172,6 +224,11 @@
   font-family: "Geist", "Segoe UI", sans-serif;
   font-size: 11.5px;
   font-weight: 600;
+}
+
+.page[id],
+#contact {
+  scroll-margin-top: 88px;
 }
 
 @media screen and (max-width: 1320px) {
@@ -190,7 +247,26 @@
   }
 }
 
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 1180px) {
+  .web-bar {
+    gap: 10px;
+  }
+
+  .web-brand .brand-lockup {
+    width: 138px;
+  }
+
+  .site-nav a {
+    padding: 7px 6px;
+    font-size: 10.75px;
+  }
+
+  .web-bar select {
+    min-width: 108px;
+  }
+}
+
+@media screen and (max-width: 980px) {
   .web-bar {
     width: calc(100% - 24px);
     min-height: 92px;
@@ -221,6 +297,11 @@
   .deck-container {
     padding-top: 118px;
   }
+
+  .page[id],
+  #contact {
+    scroll-margin-top: 124px;
+  }
 }
 
 @media screen and (max-width: 650px) {
@@ -229,7 +310,7 @@
   }
 
   .web-brand .brand-lockup {
-    width: 104px;
+    width: 126px;
   }
 
   .web-tools {
@@ -244,10 +325,13 @@
   .web-footer {
     align-items: flex-start;
     flex-direction: column;
+    padding: 20px;
+    gap: 18px;
   }
 
   .footer-actions {
     width: 100%;
+    justify-content: flex-start;
     flex-wrap: wrap;
   }
 }

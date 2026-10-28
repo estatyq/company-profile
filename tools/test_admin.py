@@ -24,6 +24,28 @@ def extract_csrf(html: str) -> str:
 
 
 def main() -> None:
+    mixed = application._default_store()
+    mixed["languages"]["en"]["products"][0]["coverSub"] = (
+        "CRM для нерухомості"
+    )
+    mixed["languages"]["en"]["products"][0]["status"] = "Активний"
+    mixed["languages"]["en"]["products"][0]["tag"] = "Custom English copy"
+    mixed["languages"]["en"]["products"][0]["features"] = list(
+        application.product_text(
+            application.PRODUCTS[0], "features", "uk"
+        )
+    )
+    repaired = application.normalize_store(mixed)
+    english_product = repaired["languages"]["en"]["products"][0]
+    assert english_product["coverSub"] == "Real estate CRM"
+    assert english_product["status"] == "Live"
+    assert english_product["tag"] == "Custom English copy"
+    assert english_product["features"] == list(
+        application.product_text(
+            application.PRODUCTS[0], "features", "en"
+        )
+    )
+
     with tempfile.TemporaryDirectory() as temporary:
         temp = pathlib.Path(temporary)
         site = temp / "site"

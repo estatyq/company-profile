@@ -600,14 +600,20 @@ def render_web_site(lang):
 </main>
 
 <footer class="web-footer">
-  <div>
+  <div class="footer-copy">
     <span class="footer-kicker">{e(t.get("export_title", "Company presentation"))}</span>
     <p>{e(t.get("export_note", "Download the current multilingual PDF or editable Word document."))}</p>
   </div>
-  <div class="footer-actions">
-    <button type="button" id="download-pdf" title="Откроется диалог печати. Выберите «Сохранить как PDF».">{icon("download")}<span>PDF</span></button>
-    <button type="button" id="download-word">{icon("download")}<span>Word</span></button>
-    <button type="button" id="edit-profile">{icon("sliders")}<span>{e(t.get("ui_manage_content", "Manage content"))}</span></button>
+  <div class="footer-actions" role="group" aria-label="{e(t.get("export_title", "Company presentation"))}">
+    <button class="footer-action footer-action-primary" type="button" id="download-pdf" aria-label="{e(t.get("ui_download_pdf", "Download PDF"))}">
+      <span class="footer-action-icon">{icon("download")}</span><span>PDF</span>
+    </button>
+    <button class="footer-action" type="button" id="download-word" aria-label="Word">
+      <span class="footer-action-icon">{icon("download")}</span><span>Word</span>
+    </button>
+    <button class="footer-action footer-action-manage" type="button" id="edit-profile">
+      <span class="footer-action-icon">{icon("sliders")}</span><span>{e(t.get("ui_manage_content", "Manage content"))}</span>
+    </button>
   </div>
 </footer>
 

@@ -87,7 +87,15 @@ async def main():
         assert await page.locator(".p3").count() == 2
         assert await page.get_by_text("Новый продукт", exact=True).count() >= 1
         assert await page.locator(".p3 .prod img").count() == 4
-        assert await page.locator("#whatsapp-cta").is_visible()
+        footer = page.locator(".web-footer")
+        await footer.scroll_into_view_if_needed()
+        assert await page.locator(".footer-action").count() == 3
+        icon_box = await page.locator("#edit-profile .footer-action-icon svg").bounding_box()
+        assert icon_box and icon_box["width"] <= 18 and icon_box["height"] <= 18
+        footer_background = await page.locator("#download-pdf").evaluate(
+            "element => getComputedStyle(element).backgroundColor"
+        )
+        assert footer_background != "rgb(255, 255, 255)"
         await page.reload(wait_until="networkidle")
         assert (
             await page.locator(".mark span").first.text_content()

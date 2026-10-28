@@ -309,6 +309,44 @@ def _normalize_product(raw: dict, index: int, lang: str) -> dict:
     }
 
 
+def _repair_product_locale(product: dict, lang: str) -> None:
+    """Repair known template translations accidentally copied across locales."""
+    source = next(
+        (item for item in PRODUCTS if item.get("id") == product.get("id")),
+        None,
+    )
+    if source is None:
+        return
+
+    for field, source_key in (
+        ("coverSub", "cover_sub"),
+        ("status", "status"),
+        ("tag", "tag"),
+        ("benefit", "benefit"),
+    ):
+        value = product.get(field, "")
+        expected = product_text(source, source_key, lang)
+        if not value or value == expected:
+            continue
+        if any(
+            other != lang
+            and value == product_text(source, source_key, other)
+            for other in LANGUAGES
+        ):
+            product[field] = expected
+
+    expected_features = list(product_text(source, "features", lang))
+    features = product.get("features", [])
+    if features == expected_features:
+        return
+    if any(
+        other != lang
+        and features == list(product_text(source, "features", other))
+        for other in LANGUAGES
+    ):
+        product["features"] = expected_features
+
+
 def normalize_store(raw: dict) -> dict:
     if not isinstance(raw, dict):
         raise ValueError("Invalid profile data")
@@ -337,6 +375,7 @@ def normalize_store(raw: dict) -> dict:
         normalized_products = []
         for index, product in enumerate(products):
             clean_product = _normalize_product(product, index, lang)
+            _repair_product_locale(clean_product, lang)
             if clean_product["id"] in seen_ids:
                 clean_product["id"] = f"{lang}-project-{uuid.uuid4().hex[:12]}"
             seen_ids.add(clean_product["id"])
