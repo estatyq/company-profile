@@ -162,7 +162,7 @@ PRODUCTS = [
         "id": "mapest",
         "name": "Mapest",
         "url": "https://mapest.app/",
-        "shot": "mapest_cards.jpg",
+        "shot": "mapest_platform.jpg",
         "badge_color": "m",
         "status": {
             "en": "Live", "id": "Aktif", "uk": "Активний",

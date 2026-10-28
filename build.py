@@ -57,9 +57,25 @@ def prepare_images():
         save(crm.crop((0, 0, 1600, 700)), "rieltix_crm.jpg")
     if (SCREENS / "rieltix_public-site.png").exists():
         save(Image.open(SCREENS / "rieltix_public-site.png"), "rieltix_site.jpg")
-    if (SCREENS / "mapest_cards.png").exists():
+    if (SCREENS / "mapest_map2.png").exists():
+        platform = Image.open(SCREENS / "mapest_map2.png").convert("RGB")
+        save(
+            platform.crop((0, 0, 2880, 1240)),
+            "mapest_platform.jpg",
+            width=1600,
+            quality=92,
+        )
+    elif (SCREENS / "mapest_hero.png").exists():
+        platform = Image.open(SCREENS / "mapest_hero.png").convert("RGB")
+        save(
+            platform.crop((0, 0, 2880, 1240)),
+            "mapest_platform.jpg",
+            width=1600,
+            quality=92,
+        )
+    elif (SCREENS / "mapest_cards.png").exists():
         cards = Image.open(SCREENS / "mapest_cards.png")
-        save(cards.crop((180, 200, 2700, 1460)), "mapest_cards.jpg", width=1600)
+        save(cards.crop((180, 200, 2700, 1460)), "mapest_platform.jpg", width=1600, quality=92)
     if (SCREENS / "mapest_mobile.png").exists():
         save(Image.open(SCREENS / "mapest_mobile.png"), "mapest_mobile.jpg", width=600, quality=88)
     if (SCREENS / "forma_en_doc.png").exists():
