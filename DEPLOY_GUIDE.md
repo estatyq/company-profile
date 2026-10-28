@@ -118,6 +118,7 @@ SECRET_KEY=случайная-длинная-строка
 COOKIE_SECURE=1
 HOST=0.0.0.0
 PORT=8765
+TRUST_PROXY=1
 ```
 
 При заданном `ADMIN_PASSWORD` первый удалённый посетитель не сможет назначить себя администратором. Локальная первичная настройка пароля через `/admin` при этом отключается.
@@ -135,6 +136,114 @@ gunicorn --bind 0.0.0.0:8765 --workers 2 app:app
 ```
 
 Используйте HTTPS. Если сайт работает за обратным прокси, передайте реальный IP клиента и включите защищённые cookies.
+
+## Переключение через PM2
+
+Рекомендуемая схема: сначала запустить новый сайт на отдельном внутреннем порту и проверить его, а старый проект остановить только после успешной проверки.
+
+### Первый запуск
+
+```bash
+cd /var/www
+git clone https://github.com/estatyq/company-profile.git
+cd company-profile
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+nano .env
+chmod 600 .env
+mkdir -p data/backups site/assets/web/uploads
+pm2 start ecosystem.config.cjs
+pm2 logs company-profile --lines 100
+```
+
+В `.env` задайте:
+
+```env
+ADMIN_PASSWORD=длинный-уникальный-пароль
+SECRET_KEY=случайная-строка-минимум-32-символа
+COOKIE_SECURE=1
+HOST=127.0.0.1
+PORT=8765
+TRUST_PROXY=1
+```
+
+Проверьте приложение до переключения домена:
+
+```bash
+curl -I http://127.0.0.1:8765/
+curl -I http://127.0.0.1:8765/admin
+```
+
+Если `COOKIE_SECURE=1`, временный тест должен выполняться через HTTPS. Для теста по обычному HTTP временно поставьте `COOKIE_SECURE=0`, а после подключения TLS верните `1`.
+
+### Остановка старого проекта
+
+Посмотрите список процессов:
+
+```bash
+pm2 list
+```
+
+Не удаляйте старый проект сразу. Сначала остановите его по имени, чтобы освободить домен:
+
+```bash
+pm2 stop ИМЯ_СТАРОГО_ПРОЦЕССА
+```
+
+После проверки нового сайта сохраните состояние:
+
+```bash
+pm2 save
+pm2 startup
+```
+
+`pm2 startup` выведет команду с `sudo` — выполните её, чтобы сайт запускался после перезагрузки сервера.
+
+### Обновление после git push
+
+```bash
+cd /var/www/company-profile
+git pull --ff-only origin main
+.venv/bin/pip install -r requirements.txt
+pm2 startOrReload ecosystem.config.cjs --update-env
+pm2 save
+```
+
+### Nginx
+
+Приложение слушает только `127.0.0.1:8765`. Nginx должен проксировать на него домен:
+
+```nginx
+server {
+    listen 80;
+    server_name xcombine.xyz www.xcombine.xyz;
+
+    client_max_body_size 12m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8765;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Проверьте и перезагрузите Nginx:
+
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+Затем выпустите HTTPS-сертификат:
+
+```bash
+sudo certbot --nginx -d xcombine.xyz -d www.xcombine.xyz
+```
 
 ### Что должно сохраняться между перезапусками
 

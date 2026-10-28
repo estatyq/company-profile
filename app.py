@@ -31,6 +31,7 @@ from flask import (
 )
 from PIL import Image, ImageOps, UnidentifiedImageError
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from content import (
     BRAND_NAME,
@@ -96,6 +97,29 @@ LOGIN_MAX_FAILURES = 5
 MAX_ID = re.compile(r"^[A-Za-z0-9_-]{1,80}$")
 
 
+def _load_dotenv() -> None:
+    """Load a simple KEY=VALUE .env file without evaluating shell syntax."""
+    env_path = ROOT / ".env"
+    if not env_path.exists():
+        return
+    try:
+        lines = env_path.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return
+    for line in lines:
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key):
+            os.environ.setdefault(key, value)
+
+
+_load_dotenv()
+
+
 def _ensure_directories() -> None:
     for path in (DATA_DIR, UPLOAD_DIR, BACKUP_DIR):
         path.mkdir(parents=True, exist_ok=True)
@@ -122,6 +146,14 @@ app.config.update(
     SESSION_COOKIE_SECURE=os.getenv("COOKIE_SECURE", "0") == "1",
     PERMANENT_SESSION_LIFETIME=60 * 60 * 8,
 )
+if os.getenv("TRUST_PROXY", "0") == "1":
+    app.wsgi_app = ProxyFix(
+        app.wsgi_app,
+        x_for=1,
+        x_proto=1,
+        x_host=1,
+        x_port=1,
+    )
 
 
 def _default_products(lang: str) -> list[dict]:
