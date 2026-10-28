@@ -174,6 +174,7 @@ def _default_products(lang: str) -> list[dict]:
                 "tag": product_text(product, "tag", lang),
                 "features": list(product_text(product, "features", lang)),
                 "benefit": product_text(product, "benefit", lang),
+                "actionLabel": "",
                 "badgeColor": product.get("badge_color", "r"),
             }
         )
@@ -303,6 +304,7 @@ def _normalize_product(raw: dict, index: int, lang: str) -> dict:
         "tag": _text(raw.get("tag"), 180),
         "features": clean_features,
         "benefit": _text(raw.get("benefit"), 500),
+        "actionLabel": _text(raw.get("actionLabel"), 50),
         "badgeColor": badge_color,
     }
 
@@ -720,7 +722,7 @@ def site_manifest():
     logo = (
         f"/assets/web/{store['logo']}"
         if store.get("logo")
-        else "/assets/favicon.svg"
+        else "/assets/icon-512.png"
     )
     return jsonify(
         {
@@ -733,8 +735,8 @@ def site_manifest():
             "icons": [
                 {
                     "src": logo,
-                    "sizes": "any",
-                    "type": "image/png" if store.get("logo") else "image/svg+xml",
+                    "sizes": "any" if store.get("logo") else "512x512",
+                    "type": "image/png",
                     "purpose": "any",
                 }
             ],

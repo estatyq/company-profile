@@ -206,7 +206,9 @@
       ? `<a class="shot" href="${escapeHtml(url)}" target="_blank" rel="noopener">${media}<span class="status"><i></i>${escapeHtml(product.status || "Live")}</span></a>`
       : `<div class="shot">${media}<span class="status"><i></i>${escapeHtml(product.status || "Live")}</span></div>`;
     const projectLink = url
-      ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(host(url))}${svg("out")}</a>`
+      ? `<a class="product-action" href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(
+          product.actionLabel || text.ui_open_product || "Open product",
+        )}${svg("out")}</a>`
       : "";
     return `
       <div class="card prod">
@@ -252,6 +254,7 @@
   }
 
   function contactRow(kind, value, text) {
+    if (!String(value || "").trim()) return "";
     const labels = text.contact_labels || {};
     const placeholders = text.contact_placeholders || {};
     const href = contactHref(kind, value);
@@ -271,6 +274,10 @@
   function renderProfile(nextProfile) {
     profile = nextProfile;
     const brand = profile.brand?.trim() || profile.descriptor;
+    const studioLabel = profile.text?.brand_submark || profile.docLabel;
+    const webTitle = studioLabel
+      ? studioLabel.charAt(0).toUpperCase() + studioLabel.slice(1)
+      : profile.docLabel;
     document
       .querySelectorAll(
         ".mark .brand-name, .mark > span:not(.submark), .language-gate-brand > span",
@@ -278,7 +285,7 @@
       .forEach((node) => {
         node.textContent = brand;
       });
-    document.title = `${brand} — ${profile.docLabel} (${profile.lang.toUpperCase()})`;
+    document.title = `${brand} — ${webTitle}`;
     renderBrandLogo(profile.logo);
     updateSeoMetadata(brand);
 
@@ -329,8 +336,8 @@
       "meta[property='og:site_name']": brand,
       "meta[property='og:description']": description,
       "meta[name='twitter:description']": description,
-      "meta[property='og:title']": `${brand} — ${profile.docLabel}`,
-      "meta[name='twitter:title']": `${brand} — ${profile.docLabel}`,
+      "meta[property='og:title']": `${brand} — ${profile.text?.brand_submark || profile.docLabel}`,
+      "meta[name='twitter:title']": `${brand} — ${profile.text?.brand_submark || profile.docLabel}`,
     };
     Object.entries(values).forEach(([selector, value]) => {
       const node = document.querySelector(selector);

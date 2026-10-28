@@ -31,6 +31,7 @@ from content import (
 ROOT = pathlib.Path(__file__).resolve().parent
 SCREENS = ROOT / "assets" / "screens"
 WEB = ROOT / "assets" / "web"
+BRAND_ASSETS = ROOT / "assets" / "brand"
 OUT = ROOT / "output"
 HTML_DIR = OUT / "html"
 PREVIEW = OUT / "preview"
@@ -123,22 +124,13 @@ def icon(name, cls=""):
 
 
 LOGO = (
-    '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">'
-    '<defs>'
-    '<linearGradient id="xc-a" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">'
-    '<stop offset="0%" stop-color="#38bdf8"/>'
-    '<stop offset="100%" stop-color="#0284c7"/>'
-    '</linearGradient>'
-    '<linearGradient id="xc-b" x1="28" y1="4" x2="4" y2="28" gradientUnits="userSpaceOnUse">'
-    '<stop offset="0%" stop-color="#22d3ee"/>'
-    '<stop offset="100%" stop-color="#38bdf8"/>'
-    '</linearGradient>'
-    '</defs>'
-    '<rect x="2" y="2" width="28" height="28" rx="8" fill="#0c1527" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1.2"/>'
-    '<path d="M9.5 9.5L22.5 22.5" stroke="url(#xc-a)" stroke-width="3" stroke-linecap="round"/>'
-    '<path d="M22.5 9.5L18 14" stroke="url(#xc-b)" stroke-width="3" stroke-linecap="round"/>'
-    '<path d="M14 18L9.5 22.5" stroke="url(#xc-b)" stroke-width="3" stroke-linecap="round"/>'
-    '<circle cx="16" cy="16" r="2.2" fill="#22d3ee"/>'
+    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+    '<path fill="#31DFD5" d="M24 2 L34 7.774 L34 26.826 L27 30.867 L27 18.166 L14 10.66 L14 7.774 Z" '
+    'transform="rotate(0 24 24) translate(24 15) scale(.84) translate(-24 -15)"/>'
+    '<path fill="#31DFD5" d="M24 2 L34 7.774 L34 26.826 L27 30.867 L27 18.166 L14 10.66 L14 7.774 Z" '
+    'transform="rotate(120 24 24) translate(24 15) scale(.84) translate(-24 -15)"/>'
+    '<path fill="#3B73F1" d="M24 2 L34 7.774 L34 26.826 L27 30.867 L27 18.166 L14 10.66 L14 7.774 Z" '
+    'transform="rotate(240 24 24) translate(24 15) scale(.84) translate(-24 -15)"/>'
     '</svg>'
 )
 
@@ -229,8 +221,6 @@ def page_cover(t, lang, img_prefix="../../assets/web/"):
   <div class="collage">
     <div class="frame f1"><div class="bar"><i></i><i></i><i></i><span>rieltix.com · catalog</span></div>
       <img src="{img_prefix}rieltix_site.jpg" alt="Rieltix"></div>
-    <div class="frame f2"><div class="bar"><i></i><i></i><i></i><span>rieltix.com · CRM</span></div>
-      <img src="{img_prefix}rieltix_crm.jpg" alt="Rieltix CRM"></div>
     <div class="phone ph"><img src="{img_prefix}mapest_mobile.jpg" alt="Mapest"></div>
   </div>
   <div class="fade-r"></div><div class="fade-b"></div>
@@ -299,7 +289,7 @@ def page_products(t, lang, products, page_no, total, chunk_index=0, chunk_count=
       <a class="shot" href="{url}"><img src="{img_prefix}{shot}" alt="{e(name)}">
         <span class="status"><i></i>{e(status)}</span></a>
       <div class="info">
-        <div class="name"><b>{e(name)}</b><a href="{url}">{host(url)}{icon("out")}</a></div>
+        <div class="name"><b>{e(name)}</b><a class="product-action" href="{url}" title="{e(host(url))}">{e(t.get("ui_open_product", "Open product"))}{icon("out")}</a></div>
         <div class="tag">{e(tag)}</div>
         <ul>{feats}</ul>
         <div class="benefit"><span class="label">{e(t["benefit_label"])}</span>{e(benefit)}</div>
@@ -328,7 +318,7 @@ def page_services(t, page_no, total):
             f'<div class="ex"><b>{e(t["example_label"])}</b>{ex_html}</div></div>'
         )
     return f"""
-<section class="page p4">{top}
+<section class="page p4" id="development">{top}
   <div class="head"><h2 class="h2">{e(t["p4_title"])}</h2><p class="lead">{e(t["p4_lead"])}</p></div>
   <div class="grid">{cards}</div>
 {foot}</section>"""
@@ -347,7 +337,7 @@ def page_why(t, page_no, total):
         for ic, h, b in t["benefits"]
     )
     return f"""
-<section class="page p5">{top}
+<section class="page p5" id="partnership">{top}
   <div class="leftcol">
     <h2 class="h2">{e(t["p5_title_a"])}<br><span class="grad">{e(t["p5_title_b"])}</span></h2>
     <p class="lead">{e(t["p5_lead"])}</p>
@@ -372,20 +362,22 @@ def page_contact(t, page_no, total):
     contacts = ""
     for kind in ("whatsapp", "telegram", "email", "website"):
         val = CONTACTS.get(kind, "")
+        if not val:
+            continue
         href = contact_href(kind, val)
         inner = (
             f'<div class="ci">{icon(kind)}</div><div><small>{e(t["contact_labels"][kind])}</small>'
-            + (f"<b>{e(val)}</b>" if val else f'<b class="ph">{e(t["contact_placeholders"][kind])}</b>')
+            + f"<b>{e(val)}</b>"
             + "</div>"
         )
         contacts += f'<a class="contact" href="{href}">{inner}</a>' if href else f'<div class="contact">{inner}</div>'
     return f"""
-<section class="page p6" id="contact">{top}
+<section class="page p6" id="process">{top}
   <div class="title"><h2 class="h2">{e(t["p6_title"])}</h2></div>
   <div class="steps">{steps}</div>
   <div class="bottom">
     <div class="models"><div class="label">{e(t["models_label"])}</div>{models}</div>
-    <div class="cta">
+    <div class="cta" id="contact">
       <div class="q">{e(t["cta_a"])} <span class="grad">{e(t["cta_b"])}</span></div>
       <p class="note">{e(t["cta_note"])}</p>
       <div class="contacts">{contacts}</div>
@@ -454,6 +446,7 @@ def public_profile_data(lang):
                 "tag": product_text(p, "tag", lang),
                 "features": list(product_text(p, "features", lang)),
                 "benefit": product_text(p, "benefit", lang),
+                "actionLabel": p.get("action_label", ""),
                 "badgeColor": p.get("badge_color", "r"),
             }
             for p in PRODUCTS
@@ -477,18 +470,12 @@ def render_html_pdf(lang):
 def render_web_site(lang):
     t = language_text(lang)
     meta = LANGUAGES[lang]
-    wa_href = contact_href("whatsapp", CONTACTS.get("whatsapp"))
-    wa_href_attr = f' href="{e(wa_href)}"' if wa_href else ""
-    wa_hidden = "" if wa_href else " hidden"
-    wa_button = (
-        f'<a class="btn-cta" id="whatsapp-cta"{wa_href_attr}{wa_hidden} '
-        f'target="_blank" rel="noopener">{icon("whatsapp")}<span>{e(t["ui_whatsapp_chat"])}</span></a>'
-    )
-
     pages = build_pages(t, lang, img_prefix="assets/web/")
-    title = f"{BRAND_NAME or t['descriptor']} — {t['doc_label']} ({lang.upper()})"
-    profile_json = json.dumps(public_profile_data(lang), ensure_ascii=False).replace("</", "<\\/")
     brand = BRAND_NAME or t["descriptor"]
+    submark = t.get("brand_submark", t["doc_label"])
+    web_title = submark[:1].upper() + submark[1:]
+    title = f"{brand} — {web_title}"
+    profile_json = json.dumps(public_profile_data(lang), ensure_ascii=False).replace("</", "<\\/")
     page_path = meta["html"] if lang != "en" else ""
     canonical = f"{PUBLIC_BASE_URL}/{page_path}"
     language_options = "".join(
@@ -504,7 +491,7 @@ def render_web_site(lang):
     language_alternates += (
         f'<link rel="alternate" hreflang="x-default" href="{PUBLIC_BASE_URL}/">'
     )
-    social_image = f"{PUBLIC_BASE_URL}/assets/web/{PRODUCTS[0]['shot']}"
+    social_image = f"{PUBLIC_BASE_URL}/assets/brand/xcombine-preview.png"
     og_locales = {
         "en": "en_US",
         "id": "id_ID",
@@ -519,7 +506,7 @@ def render_web_site(lang):
         "name": brand,
         "url": f"{PUBLIC_BASE_URL}/",
         "description": t["cover_lead"],
-        "logo": f"{PUBLIC_BASE_URL}/assets/favicon.svg",
+        "logo": f"{PUBLIC_BASE_URL}/assets/brand/xcombine-logo-color.png",
         "image": social_image,
         "areaServed": "Worldwide",
         "knowsLanguage": list(LANGUAGES),
@@ -550,6 +537,12 @@ def render_web_site(lang):
         f'{icon("out")}</a>'
         for code, meta in LANGUAGES.items()
     )
+    web_brand = (
+        f'<a class="web-brand" href="{meta["html"]}" '
+        f'aria-label="{e(brand)} — {e(t.get("brand_submark", "software product studio"))}">'
+        '<img class="brand-lockup" src="assets/brand/xcombine-logo-compact.svg" alt="">'
+        '</a>'
+    )
 
     return f"""<!doctype html>
 <html lang="{t['lang']}"><head><meta charset="utf-8">
@@ -560,6 +553,8 @@ def render_web_site(lang):
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <link rel="canonical" href="{canonical}">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
 <link rel="manifest" href="assets/site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{e(brand)}">
@@ -581,26 +576,44 @@ def render_web_site(lang):
 </head>
 <body>
 
-<nav class="web-bar">
-  <label class="language-select-wrap">
-    <span class="sr-only">Language / Мова / Sprache / Idioma</span>
-    <select id="language-select" aria-label="Language">{language_options}</select>
-  </label>
-  <span class="sep"></span>
-  <button type="button" id="edit-profile">{icon("sliders")}<span>{e(t.get("ui_edit", "Edit"))}</span></button>
-  <span class="sep"></span>
-  <button type="button" id="download-pdf" title="Откроется диалог печати. Выберите «Сохранить как PDF».">{icon("download")}<span>PDF</span></button>
-  <button type="button" id="download-word">{icon("download")}<span>Word</span></button>
-  <span class="sep"></span>{wa_button}
-</nav>
+<header class="web-header">
+  <div class="web-bar">
+    {web_brand}
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="#products">{e(t.get("nav_products", "Products"))}</a>
+      <a href="#development">{e(t.get("nav_development", "Development"))}</a>
+      <a href="#partnership">{e(t.get("nav_partnership", "Partnership"))}</a>
+      <a href="#process">{e(t.get("nav_process", "How we work"))}</a>
+    </nav>
+    <div class="web-tools">
+      <label class="language-select-wrap">
+        <span class="sr-only">Language / Мова / Sprache / Idioma</span>
+        <select id="language-select" aria-label="Language">{language_options}</select>
+      </label>
+      <a class="nav-contact" href="#contact">{e(t.get("nav_contact", "Contact"))}{icon("out")}</a>
+    </div>
+  </div>
+</header>
 
 <main class="deck-container">
   {''.join(pages)}
 </main>
 
+<footer class="web-footer">
+  <div>
+    <span class="footer-kicker">{e(t.get("export_title", "Company presentation"))}</span>
+    <p>{e(t.get("export_note", "Download the current multilingual PDF or editable Word document."))}</p>
+  </div>
+  <div class="footer-actions">
+    <button type="button" id="download-pdf" title="Откроется диалог печати. Выберите «Сохранить как PDF».">{icon("download")}<span>PDF</span></button>
+    <button type="button" id="download-word">{icon("download")}<span>Word</span></button>
+    <button type="button" id="edit-profile">{icon("sliders")}<span>{e(t.get("ui_manage_content", "Manage content"))}</span></button>
+  </div>
+</footer>
+
 <div class="language-gate" id="language-gate" hidden>
   <div class="language-gate-card" role="dialog" aria-modal="true" aria-labelledby="language-gate-title">
-    <div class="language-gate-brand">{LOGO}<span>Company Profile</span></div>
+    <div class="language-gate-brand">{LOGO}<span>{e(brand)}</span></div>
     <span class="language-gate-kicker">Choose language · Оберіть мову · Sprache wählen · Elige idioma</span>
     <h2 id="language-gate-title">How would you like to view the site?</h2>
     <p>Choose a language. You can change it at any time from the top menu.</p>
@@ -688,9 +701,15 @@ def write_seo_files():
             "theme_color": "#05080f",
             "icons": [
                 {
-                    "src": "/assets/favicon.svg",
-                    "sizes": "any",
-                    "type": "image/svg+xml",
+                    "src": "/assets/icon-32.png",
+                    "sizes": "32x32",
+                    "type": "image/png",
+                    "purpose": "any",
+                },
+                {
+                    "src": "/assets/icon-512.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
                     "purpose": "any",
                 }
             ],
@@ -748,11 +767,16 @@ async def build(preview=False):
     site_web_assets.mkdir(parents=True, exist_ok=True)
     shutil.copytree(WEB, site_web_assets, dirs_exist_ok=True)
     (site_web_assets / "uploads").mkdir(parents=True, exist_ok=True)
+    shutil.copytree(BRAND_ASSETS, site_assets / "brand", dirs_exist_ok=True)
+    shutil.copy2(BRAND_ASSETS / "favicon.svg", site_assets / "favicon.svg")
+    shutil.copy2(BRAND_ASSETS / "favicon.ico", site_assets / "favicon.ico")
+    shutil.copy2(BRAND_ASSETS / "icon-32.png", site_assets / "icon-32.png")
+    shutil.copy2(BRAND_ASSETS / "icon-180.png", site_assets / "icon-180.png")
+    shutil.copy2(BRAND_ASSETS / "icon-512.png", site_assets / "icon-512.png")
     shutil.copy2(ROOT / "template" / "style.css", site_assets / "style.css")
     shutil.copy2(ROOT / "template" / "web.css", site_assets / "web.css")
     shutil.copy2(ROOT / "template" / "editor.css", site_assets / "editor.css")
     shutil.copy2(ROOT / "template" / "app.js", site_assets / "app.js")
-    shutil.copy2(ROOT / "template" / "favicon.svg", site_assets / "favicon.svg")
     docx_bundle = pathlib.Path(
         r"C:\Users\maxhy\.cache\codex-runtimes\codex-primary-runtime\dependencies"
         r"\node\node_modules\docx\dist\index.iife.js"

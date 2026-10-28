@@ -252,6 +252,7 @@
                 <label class="admin-field"><span>Короткая категория</span><input data-project-field="coverSub" type="text" maxlength="100" value="${escapeHtml(project.coverSub || "")}"></label>
                 <label class="admin-field"><span>Описание проекта</span><input data-project-field="tag" type="text" maxlength="180" value="${escapeHtml(project.tag || "")}"></label>
               </div>
+              <label class="admin-field"><span>Текст кнопки проекта</span><input data-project-field="actionLabel" type="text" maxlength="50" value="${escapeHtml(project.actionLabel || "")}" placeholder="Open product / View demo / Request access"></label>
               <label class="admin-field"><span>Ключевые возможности — по одному пункту на строку</span><textarea data-project-field="features" rows="4">${escapeHtml((project.features || []).join("\n"))}</textarea></label>
               <label class="admin-field"><span>Ценность для клиента</span><textarea data-project-field="benefit" rows="3" maxlength="500">${escapeHtml(project.benefit || "")}</textarea></label>
               <div class="project-media">
@@ -301,6 +302,7 @@
           .map((line) => line.trim())
           .filter(Boolean),
         benefit: get("benefit").trim(),
+        actionLabel: get("actionLabel").trim(),
       });
     });
     content.languages[activeLanguage].products = projects;
@@ -319,7 +321,7 @@
       for (const project of content.languages[lang].products || []) {
         const sourceProject = common.get(project.id);
         if (!sourceProject) continue;
-        for (const key of ["name", "url", "shot", "status", "coverSub"]) {
+        for (const key of ["name", "url", "shot", "status", "coverSub", "actionLabel"]) {
           project[key] = sourceProject[key] || "";
         }
       }
@@ -363,6 +365,7 @@
         tag: "",
         features: [],
         benefit: "",
+        actionLabel: "",
         badgeColor: ["r", "m", "f"][
           content.languages[lang].products.length % 3
         ],

@@ -777,49 +777,18 @@ body.editor-is-open {
 }
 
 @media (max-width: 850px) {
-  .web-bar {
-    top: 8px;
-    gap: 4px;
-    padding: 5px 7px;
-  }
-
-  .web-bar a,
-  .web-bar button {
-    gap: 4px;
-    padding: 5px 7px;
-    font-size: 11.5px;
-  }
-
-  .web-bar .lang-switch a {
-    padding: 4px 7px;
-  }
-
   .web-bar select {
     min-width: 88px;
     padding-left: 9px;
     font-size: 10.5px;
   }
 
-  .web-bar .btn-cta {
-    display: none;
-  }
-
-  .web-bar svg {
-    width: 14px;
-    height: 14px;
-  }
-
   .deck-container {
-    padding-top: 60px !important;
+    padding-top: 118px !important;
   }
 }
 
 @media (max-width: 590px) {
-  .web-bar .sep:nth-of-type(2),
-  #download-word span {
-    display: none;
-  }
-
   .editor-panel {
     top: 0;
     right: 0;
