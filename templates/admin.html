@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="csrf-token" content="">
+  <title>Управление сайтом — Company Profile</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/admin-static/admin.css">
+</head>
+<body class="admin-page">
+  <header class="admin-topbar">
+    <a class="admin-brand" href="/admin">
+      <img src="/assets/favicon.svg" alt="">
+      <span><b>Company Profile</b><small>Панель управления</small></span>
+    </a>
+    <div class="admin-top-actions">
+      <a class="admin-preview-link" href="/" target="_blank" rel="noopener">Открыть сайт ↗</a>
+      <form method="post" action="/admin/logout">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="admin-logout" id="logout-button" type="submit">Выйти</button>
+      </form>
+      <span class="admin-avatar" aria-hidden="true">A</span>
+    </div>
+  </header>
+
+  <main class="admin-layout">
+    <aside class="admin-sidebar">
+      <nav aria-label="Разделы редактора">
+        <a href="#identity" class="active"><span>01</span>Бренд и контакты</a>
+        <a href="#page-copy"><span>02</span>Тексты страниц</a>
+        <a href="#portfolio"><span>03</span>Портфолио</a>
+        <a href="#security"><span>04</span>Безопасность</a>
+      </nav>
+      <div class="sidebar-note">
+        <b>Изменения на сервере</b>
+        <p>После сохранения обновлённые данные сразу получат посетители сайта.</p>
+      </div>
+    </aside>
+
+    <section class="admin-workspace">
+      <div class="workspace-heading">
+        <div>
+          <span class="admin-kicker">Website content</span>
+          <h1>Управление профилем</h1>
+          <p>Редактируйте публичную версию сайта без пересборки проекта.</p>
+        </div>
+        <div class="language-switch" role="tablist" aria-label="Язык сайта"></div>
+      </div>
+
+      <form id="admin-form">
+        <section id="identity" class="admin-section">
+          <div class="section-title">
+            <span>01</span>
+            <div><h2>Бренд и контакты</h2><p>Эти данные используются в обеих языковых версиях.</p></div>
+          </div>
+          <label class="admin-field wide">
+            <span>Название студии или ваше имя</span>
+            <input id="brand-field" type="text" maxlength="90" autocomplete="organization">
+          </label>
+          <div class="field-grid">
+            <label class="admin-field"><span>WhatsApp</span><input id="contact-whatsapp" type="text" maxlength="250" placeholder="+62 812 3456 7890"></label>
+            <label class="admin-field"><span>Telegram</span><input id="contact-telegram" type="text" maxlength="250" placeholder="@username"></label>
+            <label class="admin-field"><span>Email</span><input id="contact-email" type="email" maxlength="250" placeholder="name@company.com"></label>
+            <label class="admin-field"><span>Сайт</span><input id="contact-website" type="text" maxlength="250" placeholder="example.com"></label>
+          </div>
+        </section>
+
+        <section id="page-copy" class="admin-section">
+          <div class="section-title">
+            <span>02</span>
+            <div><h2>Тексты страниц</h2><p id="page-copy-language">Вы редактируете английскую версию.</p></div>
+          </div>
+          <div id="text-fields" class="text-editor"></div>
+        </section>
+
+        <section id="portfolio" class="admin-section">
+          <div class="section-title">
+            <span>03</span>
+            <div><h2>Портфолио</h2><p>Добавляйте проекты, ссылки и новые скриншоты. Общие поля синхронизируются между языками.</p></div>
+          </div>
+          <div id="project-list" class="admin-projects"></div>
+          <button id="add-project" class="admin-secondary-button" type="button">＋ Добавить проект</button>
+        </section>
+      </form>
+
+      <section id="security" class="admin-section security-section">
+        <div class="section-title">
+          <span>04</span>
+          <div><h2>Безопасность</h2><p>Смена пароля администратора.</p></div>
+        </div>
+        <details id="password-panel" class="password-panel">
+          <summary>Сменить пароль</summary>
+          <form id="password-form" class="password-form">
+            <label class="admin-field"><span>Текущий пароль</span><input name="current" type="password" autocomplete="current-password" required></label>
+            <label class="admin-field"><span>Новый пароль</span><input name="new_password" type="password" minlength="10" autocomplete="new-password" required></label>
+            <label class="admin-field"><span>Повторите новый пароль</span><input name="confirmation" type="password" minlength="10" autocomplete="new-password" required></label>
+            <button class="admin-secondary-button" type="submit">Обновить пароль</button>
+          </form>
+        </details>
+      </section>
+    </section>
+  </main>
+
+  <div class="admin-savebar">
+    <div>
+      <span class="save-indicator" id="save-indicator"></span>
+      <small id="save-status">Все изменения сохранены</small>
+    </div>
+    <button id="save-content" class="admin-primary-button" type="button">Сохранить изменения</button>
+  </div>
+
+  <div id="admin-toast" class="admin-toast" role="status"></div>
+
+  <script id="admin-bootstrap" type="application/json">{{ bootstrap_json|safe }}</script>
+  <script src="/admin-static/admin.js" defer></script>
+</body>
+</html>

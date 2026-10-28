@@ -1,0 +1,19 @@
+services:
+  company-profile:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8765:8765"
+    environment:
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}"
+      SECRET_KEY: "${SECRET_KEY:?Set SECRET_KEY in .env}"
+      COOKIE_SECURE: "1"
+      HOST: "0.0.0.0"
+      PORT: "8765"
+    volumes:
+      - profile_data:/app/data
+      - profile_uploads:/app/site/assets/web/uploads
+
+volumes:
+  profile_data:
+  profile_uploads:

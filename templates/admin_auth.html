@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>{{ "Первичная настройка" if mode == "setup" else "Админка" }} — Company Profile</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/admin-static/admin.css">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <a class="auth-brand" href="/" aria-label="Открыть сайт">
+      <img src="/assets/favicon.svg" alt="">
+      <span>Company Profile</span>
+    </a>
+    <div class="auth-copy">
+      <span class="auth-kicker">{{ "Admin setup" if mode == "setup" else "Secure admin" }}</span>
+      <h1>
+        {% if mode == "setup" %}
+          Создайте пароль администратора
+        {% elif mode == "unavailable" %}
+          Настройте пароль на сервере
+        {% else %}
+          Вход в панель управления
+        {% endif %}
+      </h1>
+      {% if mode == "setup" %}
+        <p>Пароль нужен только для редактирования сайта. Посетители его не видят. Используйте не менее 10 символов.</p>
+      {% elif mode == "unavailable" %}
+        <p>Первый запуск с другого устройства защищён. Задайте переменную окружения <code>ADMIN_PASSWORD</code> на сервере и перезапустите приложение.</p>
+      {% else %}
+        <p>Введите пароль, чтобы изменить название, контакты и портфолио.</p>
+      {% endif %}
+    </div>
+    {% if error %}<div class="auth-error" role="alert">{{ error }}</div>{% endif %}
+    {% if mode != "unavailable" %}
+    <form method="post" action="{{ '/admin/setup' if mode == 'setup' else '/admin/login' }}" class="auth-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label>
+        {{ "Пароль" if mode == "setup" else "Пароль администратора" }}
+        <input type="password" name="password" required minlength="{{ 10 if mode == 'setup' else 1 }}" autocomplete="{{ 'new-password' if mode == 'setup' else 'current-password' }}" autofocus>
+      </label>
+      {% if mode == "setup" %}
+        <label>
+          Повторите пароль
+          <input type="password" name="confirmation" required minlength="10" autocomplete="new-password">
+        </label>
+      {% endif %}
+      <button type="submit">{{ "Создать пароль и войти" if mode == "setup" else "Войти" }}</button>
+    </form>
+    {% endif %}
+    <a class="auth-back" href="/">← Вернуться на сайт</a>
+  </main>
+</body>
+</html>

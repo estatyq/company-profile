@@ -1,0 +1,346 @@
+/* Company Profile — Premium Tech / Modern SaaS. Page = 1280 x 720 CSS px (16:9). */
+:root {
+  --bg: #05080f;
+  --bg-2: #0a1020;
+  --card: rgba(255, 255, 255, 0.035);
+  --card-2: rgba(255, 255, 255, 0.055);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-2: rgba(255, 255, 255, 0.14);
+  --text: #f3f6fb;
+  --muted: #a3adbf;
+  --dim: #6b768a;
+  --blue: #3b82f6;
+  --blue-2: #60a5fa;
+  --cyan: #22d3ee;
+  --grad: linear-gradient(92deg, #6aa8ff 0%, #3b82f6 35%, #22d3ee 100%);
+  --pad-x: 64px;
+  --pad-y: 48px;
+}
+
+@page { size: 1280px 720px; margin: 0; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Geist", "Inter", "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.page {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  overflow: hidden;
+  background: var(--bg);
+  page-break-after: always;
+  break-after: page;
+}
+.page:last-child { page-break-after: auto; break-after: auto; }
+
+/* ---------- background layers ---------- */
+.bg-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(620px 420px at 88% -6%, rgba(59, 130, 246, 0.22), transparent 70%),
+    radial-gradient(520px 380px at -4% 108%, rgba(34, 211, 238, 0.11), transparent 70%);
+}
+.bg-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: -1px -1px;
+  -webkit-mask-image: radial-gradient(900px 520px at 70% 20%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(900px 520px at 70% 20%, #000 0%, transparent 75%);
+}
+
+/* ---------- chrome: header + footer ---------- */
+.top {
+  position: absolute; left: var(--pad-x); right: var(--pad-x); top: 36px;
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 5;
+}
+.eyebrow {
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--blue-2);
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--cyan); box-shadow: 0 0 12px rgba(34, 211, 238, 0.8);
+}
+.mark { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); font-weight: 500; letter-spacing: 0.01em; }
+.mark svg { width: 22px; height: 22px; }
+
+.foot {
+  position: absolute; left: var(--pad-x); right: var(--pad-x); bottom: 26px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim);
+  z-index: 5;
+}
+.foot .links a { color: var(--dim); margin-left: 18px; }
+.foot .num { color: var(--muted); }
+
+/* ---------- typography ---------- */
+.h1 { font-size: 64px; line-height: 1.02; font-weight: 600; letter-spacing: -0.035em; }
+.h2 { font-size: 40px; line-height: 1.08; font-weight: 600; letter-spacing: -0.03em; }
+.h3 { font-size: 19px; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; }
+.lead { font-size: 17px; line-height: 1.55; color: var(--muted); }
+.body { font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+.label {
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim);
+}
+.grad {
+  color: #38bdf8;
+}
+.muted { color: var(--muted); }
+
+/* ---------- generic card ---------- */
+.card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.icon {
+  width: 40px; height: 40px; border-radius: 11px;
+  display: grid; place-items: center;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.22), rgba(34, 211, 238, 0.08));
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  color: #9cc8ff;
+  flex: none;
+}
+.icon svg { width: 20px; height: 20px; }
+
+/* browser frame for screenshots */
+.frame {
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--line-2);
+  background: #0b1120;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+.frame .bar {
+  height: 26px; display: flex; align-items: center; gap: 6px; padding: 0 12px;
+  background: #0f1626; border-bottom: 1px solid var(--line);
+}
+.frame .bar i { width: 8px; height: 8px; border-radius: 50%; background: #2a3448; display: block; }
+.frame .bar span {
+  margin-left: 10px; font-family: "Geist Mono", monospace; font-size: 10px; color: var(--dim);
+  letter-spacing: 0.04em;
+}
+.frame img { display: block; width: 100%; }
+
+.phone {
+  border-radius: 34px; padding: 7px;
+  background: #0d1424;
+  border: 1px solid var(--line-2);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.phone img { display: block; width: 100%; border-radius: 28px; }
+
+/* ================= PAGE 1 — COVER ================= */
+.cover .left { position: absolute; left: var(--pad-x); top: 132px; width: 610px; z-index: 4; }
+.chip {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 7px 14px 7px 10px; border-radius: 999px;
+  border: 1px solid var(--line-2); background: rgba(255, 255, 255, 0.04);
+  font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+}
+.chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px rgba(34, 211, 238, 0.9); }
+.cover .h1 { margin-top: 26px; font-size: 66px; }
+.cover .h1.long { font-size: 60px; }
+.cover .sub {
+  margin-top: 26px; font-family: "Geist Mono", monospace; font-size: 13.5px; letter-spacing: 0.06em;
+  color: #cfe2ff; text-transform: uppercase;
+}
+.cover .lead { margin-top: 18px; max-width: 540px; }
+.cover .products {
+  position: absolute; left: var(--pad-x); bottom: 64px; z-index: 4;
+}
+.cover .products .row { display: flex; gap: 12px; margin-top: 12px; }
+.pill {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px 10px 12px; border-radius: 14px;
+  border: 1px solid var(--line-2); background: rgba(10, 16, 32, 0.75);
+}
+.pill .pm { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-weight: 700; font-size: 14px; color: #fff; }
+.pill b { display: block; font-size: 15px; font-weight: 600; }
+.pill small { display: block; font-size: 12px; color: var(--dim); margin-top: 1px; }
+.pill svg { width: 14px; height: 14px; color: var(--dim); margin-left: 6px; }
+.pm.r { background: linear-gradient(135deg, #10b981, #0f766e); }
+.pm.m { background: linear-gradient(135deg, #a3a17a, #5b5a3e); }
+.pm.f { background: linear-gradient(135deg, #34d399, #059669); }
+
+.cover .collage { position: absolute; left: 700px; top: 92px; width: 700px; height: 600px; z-index: 2; }
+.cover .collage .f1 { position: absolute; left: 40px; top: 0; width: 620px; }
+.cover .collage .f2 { position: absolute; left: 150px; top: 300px; width: 520px; }
+.cover .collage .ph { position: absolute; left: -36px; top: 170px; width: 190px; }
+.cover .fade-r {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 120px; z-index: 3;
+  background: linear-gradient(90deg, transparent, rgba(5, 8, 15, 0.85));
+}
+.cover .fade-b {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 170px; z-index: 3;
+  background: linear-gradient(180deg, transparent, var(--bg) 85%);
+}
+
+/* ================= PAGE 2 — WHO WE ARE ================= */
+.p2 .head { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 84px; display: grid; grid-template-columns: 1.35fr 1fr; gap: 48px; align-items: end; }
+.p2 .h2 { font-size: 38px; }
+.p2 .lead { font-size: 16px; }
+.p2 .problems { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 236px; }
+.p2 .problems .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 12px; }
+.p2 .prob { padding: 18px 20px; display: flex; gap: 14px; }
+.p2 .prob .n {
+  font-family: "Geist Mono", monospace; font-size: 12px; color: #ff9f8a;
+  width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+  background: rgba(255, 120, 90, 0.1); border: 1px solid rgba(255, 140, 110, 0.3); flex: none;
+}
+.p2 .prob .h3 { font-size: 16.5px; }
+.p2 .prob .body { font-size: 13.5px; margin-top: 6px; }
+.p2 .bottom { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 418px; display: grid; grid-template-columns: 1.45fr 1fr; gap: 16px; }
+.p2 .flowcard { padding: 20px 22px; }
+.flow { display: flex; align-items: flex-start; margin-top: 18px; }
+.flow .node { width: 116px; text-align: center; flex: none; }
+.flow .node .icon { margin: 0 auto; width: 46px; height: 46px; border-radius: 13px; }
+.flow .node .icon svg { width: 22px; height: 22px; }
+.flow .node b { display: block; margin-top: 10px; font-size: 13.5px; font-weight: 600; line-height: 1.25; }
+.flow .node small { display: block; margin-top: 4px; font-size: 11.5px; line-height: 1.35; color: var(--dim); }
+.flow .arrow { flex: 1; height: 46px; display: flex; align-items: center; min-width: 8px; }
+.flow .arrow::before {
+  content: ""; flex: 1; height: 2px;
+  background: linear-gradient(90deg, rgba(96, 165, 250, 0.2), rgba(34, 211, 238, 0.8));
+}
+.flow .arrow::after {
+  content: ""; width: 0; height: 0;
+  border-left: 7px solid #22d3ee; border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+}
+.flow .node.hl .icon { background: linear-gradient(180deg, rgba(34, 211, 238, 0.35), rgba(59, 130, 246, 0.25)); border-color: rgba(34, 211, 238, 0.7); color: #e0fbff; box-shadow: 0 0 24px rgba(34, 211, 238, 0.35); }
+
+.p2 .cmpcard { padding: 20px 22px; }
+.cmp { margin-top: 14px; width: 100%; border-collapse: collapse; }
+.cmp th { text-align: left; font-size: 12px; font-weight: 500; color: var(--dim); padding: 0 0 8px; font-family: "Geist Mono", monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+.cmp th.good { color: var(--cyan); }
+.cmp td { font-size: 13px; line-height: 1.35; padding: 8px 10px 8px 0; border-top: 1px solid var(--line); vertical-align: top; width: 50%; }
+.cmp td.bad { color: var(--dim); }
+.cmp td.good { color: var(--text); }
+.cmp td span { display: inline-flex; gap: 7px; align-items: flex-start; }
+.cmp td svg { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+
+/* ================= PAGE 3 — PRODUCTS ================= */
+.p3 .head { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 80px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: end; }
+.p3 .h2 { font-size: 36px; }
+.p3 .lead { font-size: 15.5px; }
+.p3 .cards { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 206px; bottom: 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.prod { display: flex; flex-direction: column; overflow: hidden; }
+.prod .shot { height: 168px; overflow: hidden; position: relative; border-bottom: 1px solid var(--line); background: #0b1120; }
+.prod .shot img { position: absolute; left: 0; top: 0; width: 100%; }
+.prod .shot::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 40px; background: linear-gradient(180deg, transparent, rgba(5, 8, 15, 0.55)); }
+.prod .status {
+  position: absolute; right: 12px; top: 12px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600;
+  background: rgba(5, 8, 15, 0.82); border: 1px solid rgba(52, 211, 153, 0.45); color: #6ee7b7;
+}
+.prod .status i { width: 6px; height: 6px; border-radius: 50%; background: #34d399; display: block; }
+.prod .info { padding: 16px 20px 18px; display: flex; flex-direction: column; flex: 1; }
+.prod .name { display: flex; justify-content: space-between; align-items: baseline; }
+.prod .name b { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.prod .name a { font-family: "Geist Mono", monospace; font-size: 12px; color: var(--blue-2); display: inline-flex; align-items: center; gap: 4px; }
+.prod .name a svg { width: 12px; height: 12px; }
+.prod .tag { font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+.prod ul { list-style: none; margin-top: 12px; }
+.prod li { display: flex; gap: 9px; font-size: 13.5px; line-height: 1.35; color: #d6dceb; padding: 3.5px 0; }
+.prod li svg { width: 15px; height: 15px; color: var(--cyan); flex: none; margin-top: 1px; }
+.prod .benefit {
+  margin-top: auto; padding: 11px 13px; border-radius: 12px;
+  background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(96, 165, 250, 0.22);
+  font-size: 12.8px; line-height: 1.42; color: #dbe7ff;
+}
+.prod .benefit .label { display: block; color: var(--blue-2); font-size: 10.5px; margin-bottom: 4px; }
+
+/* ================= PAGE 4 — SERVICES ================= */
+.p4 .head { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 80px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: end; }
+.p4 .h2 { font-size: 38px; }
+.p4 .lead { font-size: 15.5px; }
+.p4 .grid { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 216px; bottom: 62px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 16px; }
+.svc { padding: 20px 22px; display: flex; flex-direction: column; }
+.svc .toprow { display: flex; align-items: center; gap: 14px; }
+.svc .h3 { font-size: 17px; }
+.svc .body { margin-top: 12px; font-size: 14px; color: #c3cad8; }
+.svc .ex { margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--line-2); font-size: 12.5px; line-height: 1.4; color: var(--dim); }
+.svc .ex b { color: var(--blue-2); font-weight: 500; font-family: "Geist Mono", monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; margin-right: 6px; }
+.svc .ex em { font-style: normal; color: #ffd28a; }
+
+/* ================= PAGE 5 — WHY US ================= */
+.p5 .leftcol { position: absolute; left: var(--pad-x); top: 92px; width: 380px; bottom: 62px; display: flex; flex-direction: column; }
+.p5 .h2 { font-size: 38px; }
+.p5 .lead { margin-top: 18px; font-size: 15.5px; }
+.p5 .phases { margin-top: auto; padding: 20px 22px; }
+.phase { display: flex; gap: 14px; position: relative; padding-bottom: 16px; }
+.phase:last-child { padding-bottom: 0; }
+.phase .dotc { width: 26px; flex: none; position: relative; display: flex; justify-content: center; }
+.phase .dotc i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--cyan); background: var(--bg); display: block; margin-top: 4px; position: relative; z-index: 2; }
+.phase:first-child .dotc i { background: var(--cyan); box-shadow: 0 0 12px rgba(34, 211, 238, 0.8); }
+.phase .dotc::after { content: ""; position: absolute; top: 18px; bottom: -6px; width: 2px; background: linear-gradient(180deg, rgba(34, 211, 238, 0.6), rgba(59, 130, 246, 0.15)); }
+.phase:last-child .dotc::after { display: none; }
+.phase .t { font-size: 14.5px; font-weight: 600; }
+.phase .t span { font-family: "Geist Mono", monospace; font-size: 11px; color: var(--blue-2); letter-spacing: 0.08em; text-transform: uppercase; margin-right: 8px; font-weight: 500; }
+.phase .d { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.p5 .grid { position: absolute; left: 484px; right: var(--pad-x); top: 92px; bottom: 62px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); gap: 14px; }
+.ben { padding: 18px 20px; display: flex; gap: 16px; align-items: flex-start; }
+.ben .h3 { font-size: 16.5px; }
+.ben .body { font-size: 13.5px; margin-top: 6px; }
+
+/* ================= PAGE 6 — COOPERATION ================= */
+.p6 .title { position: absolute; left: var(--pad-x); top: 80px; }
+.p6 .h2 { font-size: 36px; }
+.p6 .steps { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 150px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.p6 .steps::before {
+  content: ""; position: absolute; left: 20px; right: 20px; top: 19px; height: 2px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.85), rgba(59, 130, 246, 0.25));
+}
+.step { position: relative; }
+.step .num {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--bg); border: 2px solid rgba(96, 165, 250, 0.6);
+  font-family: "Geist Mono", monospace; font-size: 14px; color: #cfe2ff; position: relative; z-index: 2;
+}
+.step:first-child .num { background: linear-gradient(135deg, #3b82f6, #22d3ee); border-color: transparent; color: #04101f; font-weight: 600; }
+.step b { display: block; margin-top: 14px; font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; }
+.step p { margin-top: 5px; font-size: 13px; line-height: 1.45; color: var(--muted); padding-right: 6px; }
+.p6 .bottom { position: absolute; left: var(--pad-x); right: var(--pad-x); top: 316px; bottom: 60px; display: grid; grid-template-columns: 1fr 1.75fr; gap: 16px; }
+.p6 .models { display: flex; flex-direction: column; gap: 12px; }
+.model { padding: 16px 18px; display: flex; gap: 14px; flex: 1; align-items: flex-start; }
+.model .h3 { font-size: 16px; }
+.model .body { font-size: 13.2px; margin-top: 4px; }
+.cta {
+  position: relative; padding: 26px 28px; border-radius: 20px; overflow: hidden;
+  background:
+    radial-gradient(420px 260px at 100% 0%, rgba(34, 211, 238, 0.22), transparent 70%),
+    radial-gradient(420px 260px at 0% 100%, rgba(59, 130, 246, 0.25), transparent 70%),
+    linear-gradient(180deg, #0d1730, #0a1124);
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  display: flex; flex-direction: column;
+}
+.cta .q { font-size: 25px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; }
+.cta .note { margin-top: 8px; font-size: 13.5px; color: var(--muted); }
+.contacts { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.contact {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px;
+  background: rgba(5, 8, 15, 0.55); border: 1px solid var(--line-2);
+}
+.contact .ci { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: rgba(59, 130, 246, 0.16); color: #9cc8ff; flex: none; }
+.contact .ci svg { width: 16px; height: 16px; }
+.contact small { display: block; font-family: "Geist Mono", monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
+.contact b { display: block; font-size: 14.5px; font-weight: 500; margin-top: 1px; }
+.contact b.ph { color: #7f8aa0; font-weight: 400; border-bottom: 1px dashed #3a4660; padding-bottom: 1px; display: inline-block; }

@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.log
+data/
+site/assets/web/uploads/
+output/
+assets/screens/
+tools/_*.png
+.DS_Store
+Thumbs.db
+*.pem
+*.key
+мои_контакты.txt

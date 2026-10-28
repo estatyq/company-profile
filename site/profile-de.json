@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "lang": "de",
+  "brand": "Unabhängiges Softwarestudio",
+  "contacts": {
+    "whatsapp": "",
+    "telegram": "",
+    "email": "",
+    "website": ""
+  },
+  "products": [
+    {
+      "id": "rieltix",
+      "name": "Rieltix",
+      "url": "https://rieltix.com/",
+      "shot": "rieltix_crm.jpg",
+      "coverSub": "CRM für Immobilien",
+      "status": "Live",
+      "tag": "CRM für Immobilienmakler",
+      "features": [
+        "Immobilien- und Kundendatenbank",
+        "Teamaufgaben und Kalender",
+        "Makler-Website mit Katalog und Karte",
+        "Telegram-Integration und Automatisierung"
+      ],
+      "benefit": "Makler sehen für jeden Kunden den nächsten Schritt — nichts geht zwischen Chats und Tabellen verloren.",
+      "badgeColor": "r"
+    },
+    {
+      "id": "mapest",
+      "name": "Mapest",
+      "url": "https://mapest.app/",
+      "shot": "mapest_cards.jpg",
+      "coverSub": "Immobilienplattform",
+      "status": "Live",
+      "tag": "Such- und Immobilienportal",
+      "features": [
+        "Zusammengeführte Angebote ohne Duplikate",
+        "Interaktive Karte mit Gebietsauswahl",
+        "Strukturierter Katalog mit detaillierten Filtern",
+        "Automatische Datenupdates und Telegram-Hinweise"
+      ],
+      "benefit": "Große Mengen verstreuter Daten werden gesammelt, geordnet und automatisch aktuell gehalten.",
+      "badgeColor": "m"
+    },
+    {
+      "id": "forma",
+      "name": "Forma",
+      "url": "https://forma.ink/",
+      "shot": "forma_doc.jpg",
+      "coverSub": "Dokumente mit KI",
+      "status": "Live",
+      "tag": "Intelligenter Dokumenteneditor mit KI",
+      "features": [
+        "Vorlagen für Briefe, Verträge und Erklärungen",
+        "Editor mit sofortiger Vorschau",
+        "KI zum Verbessern und Übersetzen von Texten",
+        "Digitale Signatur, Export nach PDF und Word"
+      ],
+      "benefit": "Weniger Zeit für Routinepapierkram — und jedes Dokument sieht einheitlich und professionell aus.",
+      "badgeColor": "f"
+    }
+  ]
+}

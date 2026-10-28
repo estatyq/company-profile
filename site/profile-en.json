@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "lang": "en",
+  "brand": "Independent Software Studio",
+  "contacts": {
+    "whatsapp": "",
+    "telegram": "",
+    "email": "",
+    "website": ""
+  },
+  "products": [
+    {
+      "id": "rieltix",
+      "name": "Rieltix",
+      "url": "https://rieltix.com/",
+      "shot": "rieltix_crm.jpg",
+      "coverSub": "Real estate CRM",
+      "status": "Live",
+      "tag": "CRM for real estate agencies",
+      "features": [
+        "Property and client database",
+        "Team tasks and calendar",
+        "Agency website with catalog and map",
+        "Telegram integration, workflow automation"
+      ],
+      "benefit": "Agents see the next step for every client — nothing gets lost between chats and spreadsheets.",
+      "badgeColor": "r"
+    },
+    {
+      "id": "mapest",
+      "name": "Mapest",
+      "url": "https://mapest.app/",
+      "shot": "mapest_cards.jpg",
+      "coverSub": "Property platform",
+      "status": "Live",
+      "tag": "Property search & listings platform",
+      "features": [
+        "Listing aggregation and de-duplication",
+        "Interactive map with area selection",
+        "Structured catalog with detailed filters",
+        "Automatic data updates, Telegram alerts"
+      ],
+      "benefit": "Large volumes of scattered data are collected, organized and kept up to date automatically.",
+      "badgeColor": "m"
+    },
+    {
+      "id": "forma",
+      "name": "Forma",
+      "url": "https://forma.ink/",
+      "shot": "forma_doc.jpg",
+      "coverSub": "AI documents",
+      "status": "Live",
+      "tag": "Smart document builder with AI",
+      "features": [
+        "Templates for letters, agreements, statements",
+        "Live editor with instant preview",
+        "AI help to improve and translate text",
+        "Digital signature, export to PDF and Word"
+      ],
+      "benefit": "Less time on routine paperwork — and documents that look consistent every time.",
+      "badgeColor": "f"
+    }
+  ]
+}

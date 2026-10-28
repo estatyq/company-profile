@@ -1,0 +1,128 @@
+/* Web viewer controls: floating bar, slide scaler, mobile responsive */
+.web-bar {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(10, 16, 32, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 6px 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  font-family: "Geist", -apple-system, sans-serif;
+  font-size: 13px;
+  color: #d6dceb;
+}
+
+.web-bar a, .web-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.web-bar a:hover, .web-bar button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.web-bar .sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.web-bar .lang-switch {
+  display: flex;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  padding: 2px;
+}
+
+.web-bar .lang-switch a {
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #94a3b8;
+}
+
+.web-bar .lang-switch a.active {
+  background: #3b82f6;
+  color: #fff;
+  font-weight: 600;
+}
+
+.web-bar .btn-cta {
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  color: #fff;
+  padding: 5px 14px;
+  font-weight: 600;
+}
+
+.web-bar .btn-cta:hover {
+  background: linear-gradient(135deg, #1d4ed8, #0891b2);
+  color: #fff;
+}
+
+/* Presentation container */
+.deck-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 0 40px;
+  gap: 32px;
+  background: #05080f;
+}
+
+.deck-container .page {
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  transition: transform 0.2s ease;
+}
+
+/* Mobile responsive view: stack cleanly on small screens */
+@media screen and (max-width: 1320px) {
+  body {
+    overflow-x: hidden;
+  }
+  .deck-container {
+    padding: 70px 16px 30px;
+    gap: 24px;
+  }
+  .deck-container .page {
+    transform-origin: top center;
+  }
+}
+
+@media print {
+  .web-bar {
+    display: none !important;
+  }
+  .deck-container {
+    padding: 0 !important;
+    gap: 0 !important;
+    background: transparent !important;
+  }
+  .deck-container .page {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "lang": "id",
+  "brand": "Independent Software Studio",
+  "contacts": {
+    "whatsapp": "",
+    "telegram": "",
+    "email": "",
+    "website": ""
+  },
+  "products": [
+    {
+      "id": "rieltix",
+      "name": "Rieltix",
+      "url": "https://rieltix.com/",
+      "shot": "rieltix_crm.jpg",
+      "coverSub": "CRM properti",
+      "status": "Aktif",
+      "tag": "CRM untuk agen properti",
+      "features": [
+        "Database properti dan klien",
+        "Tugas tim dan kalender",
+        "Website agen dengan katalog dan peta",
+        "Integrasi Telegram dan otomatisasi"
+      ],
+      "benefit": "Agen selalu tahu langkah berikutnya untuk setiap klien — tidak ada yang terlewat di antara chat dan spreadsheet.",
+      "badgeColor": "r"
+    },
+    {
+      "id": "mapest",
+      "name": "Mapest",
+      "url": "https://mapest.app/",
+      "shot": "mapest_cards.jpg",
+      "coverSub": "Platform properti",
+      "status": "Aktif",
+      "tag": "Platform pencarian dan iklan properti",
+      "features": [
+        "Listing digabung, tanpa duplikat",
+        "Peta interaktif dengan pilihan area",
+        "Katalog terstruktur dengan filter lengkap",
+        "Data diperbarui otomatis, notifikasi Telegram"
+      ],
+      "benefit": "Data dalam jumlah besar dari berbagai sumber dikumpulkan, dirapikan, dan diperbarui secara otomatis.",
+      "badgeColor": "m"
+    },
+    {
+      "id": "forma",
+      "name": "Forma",
+      "url": "https://forma.ink/",
+      "shot": "forma_doc.jpg",
+      "coverSub": "Dokumen berbasis AI",
+      "status": "Aktif",
+      "tag": "Pembuat dokumen pintar berbasis AI",
+      "features": [
+        "Template surat, perjanjian, dan pernyataan",
+        "Editor langsung dengan pratinjau instan",
+        "AI untuk memperbaiki dan menerjemahkan",
+        "Tanda tangan digital, ekspor PDF dan Word"
+      ],
+      "benefit": "Lebih sedikit waktu untuk urusan administrasi — dokumen selalu tampil rapi dan seragam.",
+      "badgeColor": "f"
+    }
+  ]
+}
