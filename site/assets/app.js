@@ -349,6 +349,29 @@
       const schema = JSON.parse(schemaNode.textContent);
       schema.name = brand;
       schema.description = description;
+      const email = profile.contacts?.email?.trim();
+      const website = profile.contacts?.website?.trim();
+      if (email) schema.email = email;
+      else delete schema.email;
+      if (email || website) {
+        const availableLanguage =
+          schema.contactPoint?.availableLanguage || [];
+        schema.contactPoint = {
+          "@type": "ContactPoint",
+          contactType: "sales",
+          availableLanguage,
+        };
+        if (email) schema.contactPoint.email = email;
+        if (website) {
+          schema.contactPoint.url = /^https?:\/\//i.test(website)
+            ? website
+            : `https://${website}`;
+        }
+      }
+      const productUrls = (profile.products || [])
+        .map((product) => normalizeUrl(product.url))
+        .filter(Boolean);
+      if (productUrls.length) schema.sameAs = productUrls;
       if (profile.logo) {
         schema.logo = new URL(logoSource(profile.logo), window.location.href).href;
       }

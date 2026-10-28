@@ -37,6 +37,12 @@ HTML_DIR = OUT / "html"
 PREVIEW = OUT / "preview"
 SITE_DIR = ROOT / "site"
 PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "https://xcombine.xyz").rstrip("/")
+INDEXNOW_KEY = os.getenv(
+    "INDEXNOW_KEY", "b6a504d750414d729a1d74cc6f0f8d6e"
+).strip()
+GOOGLE_SITE_VERIFICATION = os.getenv("GOOGLE_SITE_VERIFICATION", "").strip()
+BING_SITE_VERIFICATION = os.getenv("BING_SITE_VERIFICATION", "").strip()
+YANDEX_SITE_VERIFICATION = os.getenv("YANDEX_SITE_VERIFICATION", "").strip()
 
 e = html.escape
 
@@ -537,9 +543,32 @@ def render_web_site(lang):
             ],
         },
     }
+    if CONTACTS.get("email"):
+        organization_schema["email"] = CONTACTS["email"]
+    if CONTACTS.get("website"):
+        organization_schema["contactPoint"] = {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "url": CONTACTS["website"],
+            "availableLanguage": [
+                meta["native"] for meta in LANGUAGES.values()
+            ],
+        }
+    organization_schema["sameAs"] = [
+        product["url"] for product in PRODUCTS if product.get("url")
+    ]
     schema_json = json.dumps(
         organization_schema, ensure_ascii=False
     ).replace("</", "<\\/")
+    verification_meta = "\n".join(
+        f'<meta name="{name}" content="{e(token)}">'
+        for name, token in (
+            ("google-site-verification", GOOGLE_SITE_VERIFICATION),
+            ("msvalidate.01", BING_SITE_VERIFICATION),
+            ("yandex-verification", YANDEX_SITE_VERIFICATION),
+        )
+        if token
+    )
     language_cards = "".join(
         f'<a class="language-choice" href="{e(meta["html"])}" data-language-choice="{code}">'
         f'<span class="language-code">{e(meta["label"])}</span>'
@@ -561,6 +590,9 @@ def render_web_site(lang):
 <meta name="theme-color" content="#05080f">
 <meta name="description" content="{e(t['cover_lead'])}">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="bingbot" content="index,follow,max-image-preview:large,max-snippet:-1">
+{verification_meta}
 <link rel="canonical" href="{canonical}">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
@@ -572,11 +604,16 @@ def render_web_site(lang):
 <meta property="og:description" content="{e(t['cover_lead'])}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{social_image}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="720">
+<meta property="og:image:alt" content="{e(brand)} — {e(web_title)}">
 <meta property="og:locale" content="{og_locales[lang]}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{e(title)}">
 <meta name="twitter:description" content="{e(t['cover_lead'])}">
 <meta name="twitter:image" content="{social_image}">
+<meta name="twitter:image:alt" content="{e(brand)} — {e(web_title)}">
 {language_alternates}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -695,6 +732,9 @@ def write_seo_files():
         "Allow: /\n"
         "Disallow: /admin\n"
         "Disallow: /api/admin/\n"
+        "Disallow: /admin-static/\n"
+        "Disallow: /profile-\n"
+        "\n"
         f"Sitemap: {PUBLIC_BASE_URL}/sitemap.xml\n"
     )
     brand = BRAND_NAME or language_text("en")["descriptor"]
@@ -726,6 +766,9 @@ def write_seo_files():
     )
     (SITE_DIR / "robots.txt").write_text(robots, encoding="utf-8")
     (SITE_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+    (SITE_DIR / f"{INDEXNOW_KEY}.txt").write_text(
+        INDEXNOW_KEY + "\n", encoding="utf-8"
+    )
     (SITE_DIR / "assets" / "site.webmanifest").write_text(
         manifest, encoding="utf-8"
     )

@@ -2,4 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
 Sitemap: https://xcombine.xyz/sitemap.xml
