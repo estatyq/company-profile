@@ -20,5 +20,6 @@
   GitHub CLI is unavailable, provide the direct GitHub compare URL for opening
   the pull request.
 - In the final response, report the branch, commit SHA, push result, and pull
-  request link or compare URL. Never claim a push or PR was created without a
-  confirmed successful result.
+  request link or compare URL. Also include an exact copy-paste command for
+  another clone to fetch and pull that pushed commit. Never claim a push or PR
+  was created without a confirmed successful result.
