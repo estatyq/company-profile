@@ -253,6 +253,24 @@ body.editor-is-open {
     );
 }
 
+.pill.pill-more {
+  padding-right: 13px;
+  border-color: rgba(96, 165, 250, 0.28);
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.pill.pill-more .pm {
+  width: 34px;
+  color: #dceeff;
+  background: linear-gradient(135deg, #2563eb, #0891b2);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 11px;
+}
+
+.pill.pill-more b {
+  font-size: 13.5px;
+}
+
 .portfolio-empty {
   grid-column: 1 / -1;
   min-height: 330px;

@@ -104,6 +104,9 @@ async def run_browser(base_url: str, preview: pathlib.Path) -> None:
             await public_page.locator(".p6 .title h2").first.text_content()
         ).strip() == "Cómo trabajamos juntos"
         assert await public_page.get_by_text("Global Project", exact=True).count() >= 1
+        assert await public_page.locator(".cover .products .pill").count() == 4
+        assert await public_page.locator(".cover .products .pill-more").count() == 1
+        assert await public_page.locator(".p3").count() == 2
         await public_page.screenshot(
             path=str(preview / "public_spanish_after_admin.png"),
             full_page=False,

@@ -176,7 +176,7 @@ def chrome(t, eyebrow, page_no, total):
 def page_cover(t, lang, img_prefix="../../assets/web/"):
     long_cls = " long" if len(t["cover_title_a"] + t["cover_title_b"]) > 44 else ""
     pills = ""
-    for p in PRODUCTS:
+    for p in PRODUCTS[:3]:
         name = p["name"]
         url = p["url"]
         sub = product_text(p, "cover_sub", lang)
@@ -184,6 +184,12 @@ def page_cover(t, lang, img_prefix="../../assets/web/"):
         pills += (
             f'<a class="pill" href="{url}"><span class="pm {cls}">{name[0].upper()}</span>'
             f'<span><b>{e(name)}</b><small>{e(sub)} · {host(url)}</small></span>{icon("out")}</a>'
+        )
+    if len(PRODUCTS) > 3:
+        pills += (
+            f'<a class="pill pill-more" href="#products"><span class="pm">+{len(PRODUCTS) - 3}</span>'
+            f'<span><b>{e(t.get("ui_more_projects", "More projects"))}</b>'
+            f'<small>{e(t.get("ui_view_portfolio", "View portfolio"))}</small></span>{icon("out")}</a>'
         )
     return f"""
 <section class="page cover">
@@ -278,7 +284,7 @@ def page_products(t, lang, products, page_no, total, chunk_index=0, chunk_count=
     if not cards:
         cards = '<div class="portfolio-empty"><b>Portfolio</b><span>Add your first project in the editor.</span></div>'
     return f"""
-<section class="page p3" data-product-page="{chunk_index}">{top}
+<section class="page p3"{f' id="products"' if chunk_index == 0 else ''} data-product-page="{chunk_index}">{top}
   <div class="head"><h2 class="h2">{e(title)}</h2><p class="lead">{e(lead)}</p></div>
   <div class="cards" style="{col_style}">{cards}</div>
 {foot}</section>"""

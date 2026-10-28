@@ -243,6 +243,14 @@
     )}</small></span>${svg("out")}</${tag}>`;
   }
 
+  function coverMorePill(count, text) {
+    return `<a class="pill pill-more" href="#products"><span class="pm">+${count}</span><span><b>${escapeHtml(
+      text.ui_more_projects || "More projects",
+    )}</b><small>${escapeHtml(
+      text.ui_view_portfolio || "View portfolio",
+    )}</small></span>${svg("out")}</a>`;
+  }
+
   function contactRow(kind, value, text) {
     const labels = text.contact_labels || {};
     const placeholders = text.contact_placeholders || {};
@@ -263,9 +271,13 @@
   function renderProfile(nextProfile) {
     profile = nextProfile;
     const brand = profile.brand?.trim() || profile.descriptor;
-    document.querySelectorAll(".mark span, .language-gate-brand span").forEach((node) => {
-      node.textContent = brand;
-    });
+    document
+      .querySelectorAll(
+        ".mark .brand-name, .mark > span:not(.submark), .language-gate-brand > span",
+      )
+      .forEach((node) => {
+        node.textContent = brand;
+      });
     document.title = `${brand} — ${profile.docLabel} (${profile.lang.toUpperCase()})`;
     renderBrandLogo(profile.logo);
     updateSeoMetadata(brand);
@@ -273,7 +285,13 @@
     renderEditableText();
     const coverRow = document.querySelector(".cover .products .row");
     if (coverRow) {
-      coverRow.innerHTML = profile.products.map(coverPill).join("");
+      const visibleProducts = profile.products.slice(0, 3);
+      const remaining = profile.products.length - visibleProducts.length;
+      coverRow.innerHTML =
+        visibleProducts.map(coverPill).join("") +
+        (remaining
+          ? coverMorePill(remaining, profile.text || {})
+          : "");
     }
     renderPortfolioPages();
     renderContacts();
@@ -416,6 +434,8 @@
       if (index > 0) previous.after(page);
       previous = page;
       page.dataset.productPage = String(index);
+      if (index === 0) page.id = "products";
+      else page.removeAttribute("id");
 
       const eyebrow = page.querySelector(".top .eyebrow");
       if (eyebrow) {
