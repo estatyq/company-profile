@@ -107,6 +107,19 @@ def main() -> None:
     assert len(markers) == 1
     assert markers[0].read_text(encoding="utf-8").strip() == markers[0].stem
 
+    for icon in (
+        "favicon.ico",
+        "favicon.svg",
+        "icon-48.png",
+        "apple-touch-icon.png",
+    ):
+        icon_path = ROOT / "site" / icon
+        assert icon_path.exists()
+        assert icon_path.stat().st_size > 0
+        assert f'href="/{icon}"' in (
+            ROOT / "site" / "index.html"
+        ).read_text(encoding="utf-8")
+
     llms = (ROOT / "site" / "llms.txt").read_text(encoding="utf-8")
     llms_full = (ROOT / "site" / "llms-full.txt").read_text(encoding="utf-8")
     assert llms.startswith("# ")

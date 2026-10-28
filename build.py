@@ -594,9 +594,10 @@ def render_web_site(lang):
 <meta name="bingbot" content="index,follow,max-image-preview:large,max-snippet:-1">
 {verification_meta}
 <link rel="canonical" href="{canonical}">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/icon-48.png" type="image/png" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="assets/site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{e(brand)}">
@@ -950,6 +951,13 @@ async def build(preview=False):
     shutil.copy2(BRAND_ASSETS / "icon-32.png", site_assets / "icon-32.png")
     shutil.copy2(BRAND_ASSETS / "icon-180.png", site_assets / "icon-180.png")
     shutil.copy2(BRAND_ASSETS / "icon-512.png", site_assets / "icon-512.png")
+    for source_name, target_name in (
+        ("favicon.ico", "favicon.ico"),
+        ("favicon.svg", "favicon.svg"),
+        ("icon-48.png", "icon-48.png"),
+        ("icon-180.png", "apple-touch-icon.png"),
+    ):
+        shutil.copy2(BRAND_ASSETS / source_name, SITE_DIR / target_name)
     shutil.copy2(ROOT / "template" / "style.css", site_assets / "style.css")
     shutil.copy2(ROOT / "template" / "web.css", site_assets / "web.css")
     shutil.copy2(ROOT / "template" / "editor.css", site_assets / "editor.css")
