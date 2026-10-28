@@ -52,6 +52,14 @@ def main() -> None:
     assert "User-agent: *" in robots
     assert "Allow: /" in robots
     assert f"Sitemap: {PUBLIC_BASE_URL}/sitemap.xml" in robots
+    for crawler in (
+        "OAI-SearchBot",
+        "Claude-SearchBot",
+        "Googlebot",
+        "Google-Extended",
+        "xAI-Crawler",
+    ):
+        assert f"User-agent: {crawler}" in robots
 
     sitemap = ET.parse(ROOT / "site" / "sitemap.xml")
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
@@ -99,9 +107,17 @@ def main() -> None:
     assert len(markers) == 1
     assert markers[0].read_text(encoding="utf-8").strip() == markers[0].stem
 
+    llms = (ROOT / "site" / "llms.txt").read_text(encoding="utf-8")
+    llms_full = (ROOT / "site" / "llms-full.txt").read_text(encoding="utf-8")
+    assert llms.startswith("# ")
+    assert f"{PUBLIC_BASE_URL}/sitemap.xml" in llms
+    assert "help@xcombine.xyz" in llms
+    for meta in LANGUAGES.values():
+        assert f"## {meta['native']}" in llms_full
+
     print(
         f"SEO OK: {len(LANGUAGES)} language pages, canonical/hreflang/schema, "
-        f"sitemap and IndexNow key"
+        f"sitemap, AI crawler rules and IndexNow key"
     )
 
 

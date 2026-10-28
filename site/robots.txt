@@ -5,4 +5,116 @@ Disallow: /api/admin/
 Disallow: /admin-static/
 Disallow: /profile-
 
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: YandexBot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: Claude-User
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: xAI-Crawler
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: Grok
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /admin-static/
+Disallow: /profile-
+
 Sitemap: https://xcombine.xyz/sitemap.xml

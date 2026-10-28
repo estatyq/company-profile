@@ -1,0 +1,44 @@
+# xcombine
+
+> Independent Software Studio. Explore ready-to-use software, order a custom solution, or help shape a new product built around your industry's needs.
+
+Canonical website: https://xcombine.xyz/
+Primary page: https://xcombine.xyz/
+
+## What we do
+
+- CRM & Business Management: All clients, deals and tasks in one place. You can see what is happening in your business at any moment.
+- AI Assistants & Chatbots: Answer common questions 24/7, collect client details and pass ready requests to your team.
+- Business Process Automation: Repetitive tasks run on their own: reminders, notifications, reports and data transfer.
+- Websites & Web Applications: A fast, modern website that sends client requests straight into your system.
+- Custom Software Development: Software built for your exact process when ready-made tools don’t fit.
+- API & System Integrations: Your tools talk to each other — no more copying data by hand between apps.
+
+## Products
+
+- [Rieltix](https://rieltix.com/): CRM for real estate agencies
+- [Mapest](https://mapest.app/): Property search & listings platform
+- [Forma](https://forma.ink/): Smart document builder with AI
+
+## Languages
+
+- [English](https://xcombine.xyz/)
+- [Bahasa Indonesia](https://xcombine.xyz/id.html)
+- [Українська](https://xcombine.xyz/uk.html)
+- [Deutsch](https://xcombine.xyz/de.html)
+- [Español](https://xcombine.xyz/es.html)
+
+## Contact
+
+- Website: https://xcombine.xyz
+- Email: help@xcombine.xyz
+
+## Crawling
+
+Public pages may be crawled, indexed and cited by search and AI systems.
+Administration and profile JSON endpoints are private and excluded.
+
+## Full content
+
+- [Multilingual text collection](https://xcombine.xyz/llms-full.txt)
+- [XML sitemap](https://xcombine.xyz/sitemap.xml)

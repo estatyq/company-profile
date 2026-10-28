@@ -1,0 +1,205 @@
+# xcombine — full public content
+
+Canonical website: https://xcombine.xyz/
+
+This file contains the public marketing copy from all language versions.
+
+## English (en)
+
+URL: https://xcombine.xyz/
+
+Title: Your business has a problem. We build the solution.
+
+Summary: Explore ready-to-use software, order a custom solution, or help shape a new product built around your industry's needs.
+
+Products: Real products built for real operations.
+
+Development: Software built around your operation. When ready-made tools do not fit, we design the system, integrations and automation around your actual process.
+
+Working model: Start with a client problem. Build a product others need.. When the same need appears across companies, we validate a shared product and evolve it with early users.
+
+Process: How we work.
+
+### Rieltix
+
+CRM for real estate agencies
+
+Agents see the next step for every client — nothing gets lost between chats and spreadsheets.
+
+URL: https://rieltix.com/
+
+### Mapest
+
+Property search & listings platform
+
+Large volumes of scattered data are collected, organized and kept up to date automatically.
+
+URL: https://mapest.app/
+
+### Forma
+
+Smart document builder with AI
+
+Less time on routine paperwork — and documents that look consistent every time.
+
+URL: https://forma.ink/
+
+## Bahasa Indonesia (id)
+
+URL: https://xcombine.xyz/id.html
+
+Title: Ada masalah bisnis? Kami membangun solusinya.
+
+Summary: Jelajahi software siap pakai, pesan solusi khusus, atau bantu membentuk produk baru untuk kebutuhan industri Anda.
+
+Products: Produk nyata untuk operasional nyata.
+
+Development: Software yang dibangun untuk operasional Anda. Saat aplikasi siap pakai tidak cocok, kami merancang sistem, integrasi, dan otomatisasi sesuai proses nyata Anda.
+
+Working model: Mulai dari masalah klien. Bangun produk yang dibutuhkan banyak orang.. Saat kebutuhan yang sama muncul di banyak perusahaan, kami memvalidasi produk bersama dan mengembangkannya bersama pengguna awal.
+
+Process: Cara kami bekerja.
+
+### Rieltix
+
+CRM untuk agen properti
+
+Agen selalu tahu langkah berikutnya untuk setiap klien — tidak ada yang terlewat di antara chat dan spreadsheet.
+
+URL: https://rieltix.com/
+
+### Mapest
+
+Platform pencarian dan iklan properti
+
+Data dalam jumlah besar dari berbagai sumber dikumpulkan, dirapikan, dan diperbarui secara otomatis.
+
+URL: https://mapest.app/
+
+### Forma
+
+Pembuat dokumen pintar berbasis AI
+
+Lebih sedikit waktu untuk urusan administrasi — dokumen selalu tampil rapi dan seragam.
+
+URL: https://forma.ink/
+
+## Українська (uk)
+
+URL: https://xcombine.xyz/uk.html
+
+Title: Проблема у вашому бізнесі? Ми створюємо рішення.
+
+Summary: Обирайте готове програмне забезпечення, замовляйте індивідуальне рішення або допоможіть створити продукт для потреб вашої галузі.
+
+Products: Реальні продукти для реальної роботи.
+
+Development: Програмне забезпечення під вашу роботу. Коли готові інструменти не підходять, ми створюємо систему, інтеграції та автоматизацію навколо вашого реального процесу.
+
+Working model: Почніть із проблеми клієнта. Створіть продукт, потрібний іншим.. Коли однакова потреба виникає в різних компаніях, ми перевіряємо спільний продукт і розвиваємо його разом із першими користувачами.
+
+Process: Як ми працюємо.
+
+### Rieltix
+
+CRM для агентств нерухомості
+
+Агенти завжди бачать наступний крок для кожного клієнта — нічого не губиться між чатами й таблицями.
+
+URL: https://rieltix.com/
+
+### Mapest
+
+Платформа пошуку та оголошень нерухомості
+
+Великі обсяги розрізнених даних збираються, упорядковуються та автоматично підтримуються в актуальному стані.
+
+URL: https://mapest.app/
+
+### Forma
+
+Розумний конструктор документів зі ШІ
+
+Менше часу на рутинні документи — і завжди однакове охайне оформлення.
+
+URL: https://forma.ink/
+
+## Deutsch (de)
+
+URL: https://xcombine.xyz/de.html
+
+Title: Ihr Unternehmen hat ein Problem. Wir entwickeln die Lösung.
+
+Summary: Nutzen Sie fertige Software, bestellen Sie eine individuelle Lösung oder gestalten Sie ein neues Produkt für die Anforderungen Ihrer Branche.
+
+Products: Echte Produkte für den realen Betrieb.
+
+Development: Software für Ihren tatsächlichen Betrieb. Wenn Standardwerkzeuge nicht passen, gestalten wir System, Integrationen und Automatisierung entlang Ihres realen Prozesses.
+
+Working model: Beginnen Sie mit dem Problem eines Kunden. Bauen Sie ein Produkt, das auch andere brauchen.. Wenn derselbe Bedarf in mehreren Unternehmen auftritt, validieren wir ein gemeinsames Produkt und entwickeln es mit frühen Nutzern weiter.
+
+Process: So arbeiten wir.
+
+### Rieltix
+
+CRM für Immobilienmakler
+
+Makler sehen für jeden Kunden den nächsten Schritt — nichts geht zwischen Chats und Tabellen verloren.
+
+URL: https://rieltix.com/
+
+### Mapest
+
+Such- und Immobilienportal
+
+Große Mengen verstreuter Daten werden gesammelt, geordnet und automatisch aktuell gehalten.
+
+URL: https://mapest.app/
+
+### Forma
+
+Intelligenter Dokumenteneditor mit KI
+
+Weniger Zeit für Routinepapierkram — und jedes Dokument sieht einheitlich und professionell aus.
+
+URL: https://forma.ink/
+
+## Español (es)
+
+URL: https://xcombine.xyz/es.html
+
+Title: Tu negocio tiene un reto. Creamos la solución.
+
+Summary: Explora software listo para usar, solicita una solución a medida o ayuda a crear un producto para las necesidades de tu sector.
+
+Products: Productos reales para operaciones reales.
+
+Development: Software construido alrededor de tu operación. Cuando las herramientas estándar no encajan, diseñamos el sistema, las integraciones y la automatización alrededor de tu proceso real.
+
+Working model: Empieza con el problema de un cliente. Crea un producto que otros necesiten.. Cuando la misma necesidad aparece en varias empresas, validamos un producto compartido y lo hacemos evolucionar con los primeros usuarios.
+
+Process: Cómo trabajamos.
+
+### Rieltix
+
+CRM para agencias inmobiliarias
+
+Los agentes ven el siguiente paso para cada cliente: nada se pierde entre chats y hojas de cálculo.
+
+URL: https://rieltix.com/
+
+### Mapest
+
+Plataforma de búsqueda y anuncios inmobiliarios
+
+Grandes volúmenes de datos dispersos se recopilan, ordenan y mantienen actualizados automáticamente.
+
+URL: https://mapest.app/
+
+### Forma
+
+Creador inteligente de documentos con IA
+
+Menos tiempo en trámites rutinarios y documentos siempre ordenados y coherentes.
+
+URL: https://forma.ink/

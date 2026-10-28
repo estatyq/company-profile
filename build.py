@@ -615,6 +615,7 @@ def render_web_site(lang):
 <meta name="twitter:image" content="{social_image}">
 <meta name="twitter:image:alt" content="{e(brand)} — {e(web_title)}">
 {language_alternates}
+<link rel="alternate" type="text/markdown" href="llms.txt" title="AI-readable site summary">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
@@ -727,15 +728,40 @@ def write_seo_files():
         + "\n".join(sitemap_entries)
         + "\n</urlset>\n"
     )
-    robots = (
-        "User-agent: *\n"
-        "Allow: /\n"
-        "Disallow: /admin\n"
-        "Disallow: /api/admin/\n"
-        "Disallow: /admin-static/\n"
-        "Disallow: /profile-\n"
-        "\n"
-        f"Sitemap: {PUBLIC_BASE_URL}/sitemap.xml\n"
+    crawler_names = (
+        "*",
+        "Googlebot",
+        "Bingbot",
+        "YandexBot",
+        "DuckDuckBot",
+        "Applebot-Extended",
+        "OAI-SearchBot",
+        "ChatGPT-User",
+        "GPTBot",
+        "Claude-SearchBot",
+        "Claude-User",
+        "ClaudeBot",
+        "Google-Extended",
+        "PerplexityBot",
+        "xAI-Crawler",
+        "Grok",
+        "CCBot",
+    )
+    robots_groups = []
+    for crawler in crawler_names:
+        robots_groups.extend(
+            [
+                f"User-agent: {crawler}",
+                "Allow: /",
+                "Disallow: /admin",
+                "Disallow: /api/admin/",
+                "Disallow: /admin-static/",
+                "Disallow: /profile-",
+                "",
+            ]
+        )
+    robots = "\n".join(
+        robots_groups + [f"Sitemap: {PUBLIC_BASE_URL}/sitemap.xml", ""]
     )
     brand = BRAND_NAME or language_text("en")["descriptor"]
     manifest = json.dumps(
@@ -764,11 +790,112 @@ def write_seo_files():
         ensure_ascii=False,
         indent=2,
     )
+    english = language_text("en")
+    language_links = "\n".join(
+        f"- [{meta['native']}]({PUBLIC_BASE_URL}/{meta['html'] if code != 'en' else ''})"
+        for code, meta in LANGUAGES.items()
+    )
+    product_links = "\n".join(
+        f"- [{product['name']}]({product['url']}): "
+        f"{product_text(product, 'tag', 'en')}"
+        for product in PRODUCTS
+    )
+    service_links = "\n".join(
+        f"- {title}: {body}" for _, title, body, _ in english["services"]
+    )
+    contact_lines = [
+        f"- Website: {CONTACTS['website']}" if CONTACTS.get("website") else "",
+        f"- Email: {CONTACTS['email']}" if CONTACTS.get("email") else "",
+    ]
+    llms = "\n".join(
+        [
+            f"# {BRAND_NAME or english['descriptor']}",
+            "",
+            f"> {english['descriptor']}. {english['cover_lead']}",
+            "",
+            f"Canonical website: {PUBLIC_BASE_URL}/",
+            f"Primary page: {PUBLIC_BASE_URL}/",
+            "",
+            "## What we do",
+            "",
+            service_links,
+            "",
+            "## Products",
+            "",
+            product_links,
+            "",
+            "## Languages",
+            "",
+            language_links,
+            "",
+            "## Contact",
+            "",
+            *[line for line in contact_lines if line],
+            "",
+            "## Crawling",
+            "",
+            "Public pages may be crawled, indexed and cited by search and AI systems.",
+            "Administration and profile JSON endpoints are private and excluded.",
+            "",
+            "## Full content",
+            "",
+            f"- [Multilingual text collection]({PUBLIC_BASE_URL}/llms-full.txt)",
+            f"- [XML sitemap]({PUBLIC_BASE_URL}/sitemap.xml)",
+            "",
+        ]
+    )
+    full_sections = [
+        f"# {BRAND_NAME or english['descriptor']} — full public content",
+        "",
+        f"Canonical website: {PUBLIC_BASE_URL}/",
+        "",
+        "This file contains the public marketing copy from all language versions.",
+        "",
+    ]
+    for code, meta in LANGUAGES.items():
+        text = language_text(code)
+        page_url = f"{PUBLIC_BASE_URL}/{meta['html'] if code != 'en' else ''}"
+        full_sections.extend(
+            [
+                f"## {meta['native']} ({code})",
+                "",
+                f"URL: {page_url}",
+                "",
+                f"Title: {text['cover_title_a']} {text['cover_title_b']}",
+                "",
+                f"Summary: {text['cover_lead']}",
+                "",
+                f"Products: {text['p3_title']}",
+                "",
+                f"Development: {text['p4_title']}. {text['p4_lead']}",
+                "",
+                f"Working model: {text['p5_title_a']} {text['p5_title_b']}. {text['p5_lead']}",
+                "",
+                f"Process: {text['p6_title']}.",
+                "",
+            ]
+        )
+        for product in PRODUCTS:
+            full_sections.extend(
+                [
+                    f"### {product['name']}",
+                    "",
+                    product_text(product, "tag", code),
+                    "",
+                    product_text(product, "benefit", code),
+                    "",
+                    f"URL: {product['url']}",
+                    "",
+                ]
+            )
+    llms_full = "\n".join(full_sections)
     (SITE_DIR / "robots.txt").write_text(robots, encoding="utf-8")
     (SITE_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
     (SITE_DIR / f"{INDEXNOW_KEY}.txt").write_text(
         INDEXNOW_KEY + "\n", encoding="utf-8"
     )
+    (SITE_DIR / "llms.txt").write_text(llms, encoding="utf-8")
+    (SITE_DIR / "llms-full.txt").write_text(llms_full, encoding="utf-8")
     (SITE_DIR / "assets" / "site.webmanifest").write_text(
         manifest, encoding="utf-8"
     )

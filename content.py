@@ -59,7 +59,7 @@ BRAND_NAME = "xcombine"
 CONTACTS = {
     "whatsapp": "",
     "telegram": "",
-    "email": "",
+    "email": "help@xcombine.xyz",
     "website": "https://xcombine.xyz",
 }
 
