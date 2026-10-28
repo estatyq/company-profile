@@ -6,6 +6,7 @@ __pycache__/
 !.env.example
 *.log
 data/
+site/profile-*.json
 site/assets/web/uploads/
 output/
 assets/screens/
