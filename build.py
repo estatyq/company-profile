@@ -347,7 +347,7 @@ def page_why(t, page_no, total):
 {foot}</section>"""
 
 
-def page_contact(t, page_no, total):
+def page_contact(t, page_no, total, brand_prefix="../../assets/brand/"):
     top, foot = chrome(t, t["p6_eyebrow"], page_no, total)
     steps = "".join(
         f'<div class="step"><div class="num">{i + 1}</div><b>{e(h)}</b><p>{e(b)}</p></div>'
@@ -378,8 +378,13 @@ def page_contact(t, page_no, total):
   <div class="bottom">
     <div class="models"><div class="label">{e(t["models_label"])}</div>{models}</div>
     <div class="cta" id="contact">
-      <div class="q">{e(t["cta_a"])} <span class="grad">{e(t["cta_b"])}</span></div>
-      <p class="note">{e(t["cta_note"])}</p>
+      <div class="cta-main">
+        <div class="cta-copy">
+          <div class="q">{e(t["cta_a"])} <span class="grad">{e(t["cta_b"])}</span></div>
+          <p class="note">{e(t["cta_note"])}</p>
+        </div>
+        <img class="contact-companion" src="{brand_prefix}xcombine-companion.svg" alt="">
+      </div>
       <div class="contacts">{contacts}</div>
     </div>
   </div>
@@ -418,7 +423,12 @@ def build_pages(t, lang, img_prefix, page_size=3):
     pages.extend([
         page_services(t, services_page, total),
         page_why(t, services_page + 1, total),
-        page_contact(t, services_page + 2, total),
+        page_contact(
+            t,
+            services_page + 2,
+            total,
+            img_prefix.replace("assets/web/", "assets/brand/"),
+        ),
     ])
     return pages
 
@@ -605,14 +615,11 @@ def render_web_site(lang):
     <p>{e(t.get("export_note", "Download the current multilingual PDF or editable Word document."))}</p>
   </div>
   <div class="footer-actions" role="group" aria-label="{e(t.get("export_title", "Company presentation"))}">
-    <button class="footer-action footer-action-primary" type="button" id="download-pdf" aria-label="{e(t.get("ui_download_pdf", "Download PDF"))}">
+    <a class="footer-action footer-action-primary" id="download-pdf" href="Company_Profile_{meta["file_suffix"]}.pdf" download="Company_Profile_{meta["file_suffix"]}.pdf" aria-label="{e(t.get("ui_download_pdf", "Download PDF"))}">
       <span class="footer-action-icon">{icon("download")}</span><span>PDF</span>
-    </button>
+    </a>
     <button class="footer-action" type="button" id="download-word" aria-label="Word">
       <span class="footer-action-icon">{icon("download")}</span><span>Word</span>
-    </button>
-    <button class="footer-action footer-action-manage" type="button" id="edit-profile">
-      <span class="footer-action-icon">{icon("sliders")}</span><span>{e(t.get("ui_manage_content", "Manage content"))}</span>
     </button>
   </div>
 </footer>
@@ -635,14 +642,8 @@ def render_web_site(lang):
   function rescale() {{
     const w = window.innerWidth;
     const pages = document.querySelectorAll('.deck-container .page');
-    if (w < 1320 && w >= 768) {{
+    if (w >= 900 && w < 1320) {{
       const scale = (w - 32) / 1280;
-      pages.forEach(p => {{
-        p.style.transform = `scale(${{scale}})`;
-        p.style.marginBottom = `${{-(720 * (1 - scale))}}px`;
-      }});
-    }} else if (w < 768) {{
-      const scale = (w - 24) / 1280;
       pages.forEach(p => {{
         p.style.transform = `scale(${{scale}})`;
         p.style.marginBottom = `${{-(720 * (1 - scale))}}px`;

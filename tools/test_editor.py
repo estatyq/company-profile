@@ -15,6 +15,7 @@ SITE = ROOT / "site" / "index.html"
 PREVIEW = ROOT / "output" / "preview"
 QA_DOCX = ROOT / "output" / "interactive_editor_qa.docx"
 QA_PDF = ROOT / "output" / "interactive_editor_qa.pdf"
+STATIC_PDF = ROOT / "output" / "downloaded_profile.pdf"
 
 
 async def main():
@@ -51,7 +52,7 @@ async def main():
         await page.reload(wait_until="networkidle")
 
         assert await page.locator(".deck-container .page").count() == 6
-        await page.locator("#edit-profile").click()
+        await page.evaluate("window.profileEditor.open()")
         await page.locator("#editor-brand").fill("Студия Север")
         await page.locator("#editor-whatsapp").fill("+7 978 123-45-67")
         await page.locator("#editor-telegram").fill("@north_studio")
@@ -89,13 +90,14 @@ async def main():
         assert await page.locator(".p3 .prod img").count() == 4
         footer = page.locator(".web-footer")
         await footer.scroll_into_view_if_needed()
-        assert await page.locator(".footer-action").count() == 3
-        icon_box = await page.locator("#edit-profile .footer-action-icon svg").bounding_box()
+        assert await page.locator(".footer-action").count() == 2
+        icon_box = await page.locator("#download-pdf .footer-action-icon svg").bounding_box()
         assert icon_box and icon_box["width"] <= 18 and icon_box["height"] <= 18
         footer_background = await page.locator("#download-pdf").evaluate(
             "element => getComputedStyle(element).backgroundColor"
         )
         assert footer_background != "rgb(255, 255, 255)"
+        assert await page.locator("#edit-profile").count() == 0
         await page.reload(wait_until="networkidle")
         assert (
             await page.locator(".mark span").first.text_content()
@@ -140,11 +142,48 @@ async def main():
             ),
         )
         await published_page.goto(site_url, wait_until="networkidle")
+        await published_page.wait_for_function(
+            "document.querySelector('.mark .brand-name')?.textContent === 'Published Studio'"
+        )
         assert (
-            await published_page.locator(".mark span").first.text_content()
+            await published_page.locator(".mark .brand-name").first.text_content()
         ).strip() == "Published Studio"
         assert await published_page.get_by_text("Published Work", exact=True).count() >= 1
+        async with published_page.expect_download(
+            timeout=30000
+        ) as pdf_download_info:
+            await published_page.locator("#download-pdf").click()
+        pdf_download = await pdf_download_info.value
+        await pdf_download.save_as(STATIC_PDF)
+        assert STATIC_PDF.read_bytes().startswith(b"%PDF")
+        assert STATIC_PDF.stat().st_size > 100000
         await published_context.close()
+
+        mobile_context = await browser.new_context(
+            viewport={"width": 390, "height": 844}
+        )
+        mobile_page = await mobile_context.new_page()
+        await mobile_page.add_init_script(
+            "localStorage.setItem('company-profile-language-selection', 'en')"
+        )
+        await mobile_page.goto(site_url, wait_until="networkidle")
+        assert await mobile_page.locator(".deck-container .page").count() == 6
+        assert not await mobile_page.evaluate(
+            "document.documentElement.scrollWidth > document.documentElement.clientWidth"
+        )
+        menu_font_size = await mobile_page.locator(".site-nav a").first.evaluate(
+            "element => parseFloat(getComputedStyle(element).fontSize)"
+        )
+        assert menu_font_size >= 11.5
+        await mobile_page.locator('.site-nav a[href="#products"]').click()
+        target_top = await mobile_page.locator("#products").evaluate(
+            "element => element.getBoundingClientRect().top"
+        )
+        header_bottom = await mobile_page.locator(".web-header").evaluate(
+            "element => element.getBoundingClientRect().bottom"
+        )
+        assert target_top > header_bottom + 20
+        await mobile_context.close()
         await browser.close()
     server.shutdown()
     server_thread.join(timeout=3)

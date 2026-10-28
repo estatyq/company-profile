@@ -549,7 +549,7 @@
     }
     const width = window.innerWidth;
     const pages = document.querySelectorAll(".deck-container .page");
-    if (width >= 1320) {
+    if (width >= 1320 || width < 900) {
       pages.forEach((page) => {
         page.style.transform = "none";
         page.style.marginBottom = "0";
@@ -1593,9 +1593,6 @@
         if (file) await importJson(file);
         event.target.value = "";
       });
-    document
-      .getElementById("download-pdf")
-      ?.addEventListener("click", () => window.print());
     document
       .getElementById("download-word")
       ?.addEventListener("click", downloadWord);

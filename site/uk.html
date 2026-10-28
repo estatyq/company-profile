@@ -138,8 +138,13 @@
   <div class="bottom">
     <div class="models"><div class="label">Два способи старту</div><div class="card model"><div class="icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg></div><div><div class="h3">Індивідуальний проєкт</div><p class="body">Окрема система для вашої власної роботи.</p></div></div><div class="card model"><div class="icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></div><div><div class="h3">Партнерство над продуктом</div><p class="body">Почніть зі спільної проблеми та дослідіть можливість повторно використовуваного продукту.</p></div></div></div>
     <div class="cta" id="contact">
-      <div class="q">Маєте бізнес-проблему, яку можуть мати й інші компанії? <span class="grad">Перевірмо, чи варто перетворити її на продукт.</span></div>
-      <p class="note">Розкажіть про процес, хто відчуває проблему та яким має бути результат.</p>
+      <div class="cta-main">
+        <div class="cta-copy">
+          <div class="q">Маєте бізнес-проблему, яку можуть мати й інші компанії? <span class="grad">Перевірмо, чи варто перетворити її на продукт.</span></div>
+          <p class="note">Розкажіть про процес, хто відчуває проблему та яким має бути результат.</p>
+        </div>
+        <img class="contact-companion" src="assets/brand/xcombine-companion.svg" alt="">
+      </div>
       <div class="contacts"><a class="contact" href="https://xcombine.xyz"><div class="ci"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div><small>Сайт</small><b>https://xcombine.xyz</b></div></a></div>
     </div>
   </div>
@@ -152,14 +157,11 @@
     <p>Завантажте актуальну PDF-версію або редагований документ Word.</p>
   </div>
   <div class="footer-actions" role="group" aria-label="Презентація компанії">
-    <button class="footer-action footer-action-primary" type="button" id="download-pdf" aria-label="Завантажити PDF">
+    <a class="footer-action footer-action-primary" id="download-pdf" href="Company_Profile_UK.pdf" download="Company_Profile_UK.pdf" aria-label="Завантажити PDF">
       <span class="footer-action-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span>PDF</span>
-    </button>
+    </a>
     <button class="footer-action" type="button" id="download-word" aria-label="Word">
       <span class="footer-action-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span>Word</span>
-    </button>
-    <button class="footer-action footer-action-manage" type="button" id="edit-profile">
-      <span class="footer-action-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></span><span>Керувати контентом</span>
     </button>
   </div>
 </footer>
@@ -182,14 +184,8 @@
   function rescale() {
     const w = window.innerWidth;
     const pages = document.querySelectorAll('.deck-container .page');
-    if (w < 1320 && w >= 768) {
+    if (w >= 900 && w < 1320) {
       const scale = (w - 32) / 1280;
-      pages.forEach(p => {
-        p.style.transform = `scale(${scale})`;
-        p.style.marginBottom = `${-(720 * (1 - scale))}px`;
-      });
-    } else if (w < 768) {
-      const scale = (w - 24) / 1280;
       pages.forEach(p => {
         p.style.transform = `scale(${scale})`;
         p.style.marginBottom = `${-(720 * (1 - scale))}px`;
