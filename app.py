@@ -181,6 +181,7 @@ def _default_store() -> dict:
     return {
         "version": 2,
         "brand": BRAND_NAME or english["descriptor"],
+        "logo": "",
         "contacts": {key: CONTACTS.get(key, "") for key in CONTACT_FIELDS},
         "languages": {
             lang: {
@@ -207,6 +208,8 @@ def _merge_language_file(store: dict, lang: str) -> None:
         return
     if isinstance(data.get("brand"), str):
         store["brand"] = data["brand"]
+    if isinstance(data.get("logo"), str) and data["logo"]:
+        store["logo"] = data["logo"]
     if isinstance(data.get("contacts"), dict):
         for key in CONTACT_FIELDS:
             value = data["contacts"].get(key)
@@ -309,6 +312,7 @@ def normalize_store(raw: dict) -> dict:
     result = {
         "version": 2,
         "brand": _text(raw.get("brand"), 90) or defaults["brand"],
+        "logo": _shot(raw.get("logo")),
         "contacts": {
             key: _text(contacts.get(key), 250) for key in CONTACT_FIELDS
         },
@@ -380,6 +384,7 @@ def save_store(store: dict) -> None:
                 "version": 2,
                 "lang": lang,
                 "brand": normalized["brand"],
+                "logo": normalized["logo"],
                 "contacts": normalized["contacts"],
                 "products": language["products"],
                 "text": language["text"],
@@ -629,6 +634,32 @@ def upload_image():
     return jsonify({"ok": True, "shot": f"uploads/{filename}"})
 
 
+@app.post("/api/admin/logo")
+@admin_required
+def upload_logo():
+    file = request.files.get("logo")
+    if not file:
+        return jsonify({"error": "Logo is required"}), 400
+    try:
+        raw = file.read()
+        if not raw or len(raw) > 5 * 1024 * 1024:
+            raise ValueError("Logo must be smaller than 5 MB")
+        Image.MAX_IMAGE_PIXELS = 30_000_000
+        source = Image.open(io.BytesIO(raw))
+        source.verify()
+        source = Image.open(io.BytesIO(raw))
+        image = ImageOps.exif_transpose(source)
+        if image.mode not in ("RGBA", "LA"):
+            image = image.convert("RGBA")
+        image.thumbnail((800, 400), Image.Resampling.LANCZOS)
+        filename = f"logo-{uuid.uuid4().hex}.png"
+        destination = UPLOAD_DIR / filename
+        image.save(destination, "PNG", optimize=True)
+    except (UnidentifiedImageError, OSError, ValueError):
+        return jsonify({"error": "Upload a valid PNG, JPG or WebP logo"}), 422
+    return jsonify({"ok": True, "logo": f"uploads/{filename}"})
+
+
 @app.post("/api/admin/password")
 @admin_required
 def change_password():
@@ -671,9 +702,38 @@ def public_profile(lang: str):
             "version": 2,
             "lang": lang,
             "brand": store["brand"],
+            "logo": store["logo"],
             "contacts": store["contacts"],
             "products": language["products"],
             "text": language["text"],
+        }
+    )
+
+
+@app.get("/assets/site.webmanifest")
+def site_manifest():
+    store = load_store()
+    logo = (
+        f"/assets/web/{store['logo']}"
+        if store.get("logo")
+        else "/assets/favicon.svg"
+    )
+    return jsonify(
+        {
+            "name": store["brand"],
+            "short_name": store["brand"][:24],
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#05080f",
+            "theme_color": "#05080f",
+            "icons": [
+                {
+                    "src": logo,
+                    "sizes": "any",
+                    "type": "image/png" if store.get("logo") else "image/svg+xml",
+                    "purpose": "any",
+                }
+            ],
         }
     )
 

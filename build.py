@@ -8,10 +8,12 @@ Usage:
 import asyncio
 import html
 import json
+import os
 import pathlib
 import re
 import shutil
 import sys
+from datetime import date
 
 from PIL import Image
 from playwright.async_api import async_playwright
@@ -33,6 +35,7 @@ OUT = ROOT / "output"
 HTML_DIR = OUT / "html"
 PREVIEW = OUT / "preview"
 SITE_DIR = ROOT / "site"
+PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "https://xcombine.xyz").rstrip("/")
 
 e = html.escape
 
@@ -104,12 +107,23 @@ def icon(name, cls=""):
 
 
 LOGO = (
-    '<svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="24" y2="24">'
-    '<stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>'
-    '<rect x="1" y="1" width="22" height="22" rx="6" stroke="url(#lg)" stroke-width="1.6"/>'
-    '<circle cx="7.5" cy="8" r="1.9" fill="url(#lg)"/><circle cx="16.5" cy="8" r="1.9" fill="url(#lg)"/>'
-    '<circle cx="12" cy="16.5" r="1.9" fill="url(#lg)"/>'
-    '<path d="M7.5 8h9M7.5 8l4.5 8.5M16.5 8 12 16.5" stroke="url(#lg)" stroke-width="1.2" opacity=".7"/></svg>'
+    '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">'
+    '<defs>'
+    '<linearGradient id="xc-a" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">'
+    '<stop offset="0%" stop-color="#38bdf8"/>'
+    '<stop offset="100%" stop-color="#0284c7"/>'
+    '</linearGradient>'
+    '<linearGradient id="xc-b" x1="28" y1="4" x2="4" y2="28" gradientUnits="userSpaceOnUse">'
+    '<stop offset="0%" stop-color="#22d3ee"/>'
+    '<stop offset="100%" stop-color="#38bdf8"/>'
+    '</linearGradient>'
+    '</defs>'
+    '<rect x="2" y="2" width="28" height="28" rx="8" fill="#0c1527" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1.2"/>'
+    '<path d="M9.5 9.5L22.5 22.5" stroke="url(#xc-a)" stroke-width="3" stroke-linecap="round"/>'
+    '<path d="M22.5 9.5L18 14" stroke="url(#xc-b)" stroke-width="3" stroke-linecap="round"/>'
+    '<path d="M14 18L9.5 22.5" stroke="url(#xc-b)" stroke-width="3" stroke-linecap="round"/>'
+    '<circle cx="16" cy="16" r="2.2" fill="#22d3ee"/>'
+    '</svg>'
 )
 
 # --------------------------------------------------------------------------- helpers
@@ -133,8 +147,13 @@ def host(url):
     return url.replace("https://", "").replace("http://", "").rstrip("/")
 
 
+def brand_mark(t):
+    if BRAND_NAME:
+        return f'<div class="mark">{LOGO}<span class="brand-name">{e(BRAND_NAME)}</span><span class="submark">digital agency</span></div>'
+    return f'<div class="mark">{LOGO}<span>{e(t["descriptor"])}</span></div>'
+
+
 def chrome(t, eyebrow, page_no, total):
-    brand = e(BRAND_NAME) if BRAND_NAME else e(t["descriptor"])
     shown_products = PRODUCTS[:4]
     links = "".join(f'<a href="{e(p["url"])}">{e(host(p["url"]))}</a>' for p in shown_products)
     if len(PRODUCTS) > len(shown_products):
@@ -142,7 +161,7 @@ def chrome(t, eyebrow, page_no, total):
     top = (
         f'<div class="bg-glow"></div><div class="bg-grid"></div>'
         f'<header class="top"><div class="eyebrow"><span class="dot"></span>{e(eyebrow)}</div>'
-        f'<div class="mark">{LOGO}<span>{brand}</span></div></header>'
+        f'{brand_mark(t)}</header>'
     )
     foot = (
         f'<footer class="foot"><span>{e(t["doc_label"])} · {t["year"]}</span>'
@@ -155,7 +174,6 @@ def chrome(t, eyebrow, page_no, total):
 
 
 def page_cover(t, lang, img_prefix="../../assets/web/"):
-    brand = e(BRAND_NAME) if BRAND_NAME else e(t["descriptor"])
     long_cls = " long" if len(t["cover_title_a"] + t["cover_title_b"]) > 44 else ""
     pills = ""
     for p in PRODUCTS:
@@ -170,7 +188,7 @@ def page_cover(t, lang, img_prefix="../../assets/web/"):
     return f"""
 <section class="page cover">
   <div class="bg-glow"></div><div class="bg-grid"></div>
-  <header class="top"><div class="mark">{LOGO}<span>{brand}</span></div>
+  <header class="top">{brand_mark(t)}
     <div class="eyebrow" data-cover-eyebrow>{e(t.get("cover_eyebrow", "Software · AI · Automation"))}</div></header>
   <div class="left">
     <span class="chip"><span class="dot"></span>{e(t["cover_chip"])}</span>
@@ -390,6 +408,7 @@ def public_profile_data(lang):
         "version": 1,
         "lang": lang,
         "brand": BRAND_NAME or t["descriptor"],
+        "logo": "",
         "descriptor": t["descriptor"],
         "docLabel": t["doc_label"],
         "year": t["year"],
@@ -427,6 +446,7 @@ def render_html_pdf(lang):
 
 def render_web_site(lang):
     t = language_text(lang)
+    meta = LANGUAGES[lang]
     wa_href = contact_href("whatsapp", CONTACTS.get("whatsapp"))
     wa_href_attr = f' href="{e(wa_href)}"' if wa_href else ""
     wa_hidden = "" if wa_href else " hidden"
@@ -438,15 +458,46 @@ def render_web_site(lang):
     pages = build_pages(t, lang, img_prefix="assets/web/")
     title = f"{BRAND_NAME or t['descriptor']} — {t['doc_label']} ({lang.upper()})"
     profile_json = json.dumps(public_profile_data(lang), ensure_ascii=False).replace("</", "<\\/")
+    brand = BRAND_NAME or t["descriptor"]
+    page_path = meta["html"] if lang != "en" else ""
+    canonical = f"{PUBLIC_BASE_URL}/{page_path}"
     language_options = "".join(
         f'<option value="{e(meta["html"])}" data-code="{code}"{" selected" if code == lang else ""}>'
         f'{e(meta["native"])}</option>'
         for code, meta in LANGUAGES.items()
     )
     language_alternates = "".join(
-        f'<link rel="alternate" hreflang="{code}" href="{e(meta["html"])}">'
+        f'<link rel="alternate" hreflang="{code}" '
+        f'href="{PUBLIC_BASE_URL}/{meta["html"] if code != "en" else ""}">'
         for code, meta in LANGUAGES.items()
     )
+    language_alternates += (
+        f'<link rel="alternate" hreflang="x-default" href="{PUBLIC_BASE_URL}/">'
+    )
+    social_image = f"{PUBLIC_BASE_URL}/assets/web/{PRODUCTS[0]['shot']}"
+    og_locales = {
+        "en": "en_US",
+        "id": "id_ID",
+        "uk": "uk_UA",
+        "de": "de_DE",
+        "es": "es_ES",
+    }
+    organization_schema = {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": f"{PUBLIC_BASE_URL}/#organization",
+        "name": brand,
+        "url": f"{PUBLIC_BASE_URL}/",
+        "description": t["cover_lead"],
+        "logo": f"{PUBLIC_BASE_URL}/assets/favicon.svg",
+        "image": social_image,
+        "areaServed": "Worldwide",
+        "knowsLanguage": list(LANGUAGES),
+        "serviceType": [service[1] for service in t["services"]],
+    }
+    schema_json = json.dumps(
+        organization_schema, ensure_ascii=False
+    ).replace("</", "<\\/")
     language_cards = "".join(
         f'<a class="language-choice" href="{e(meta["html"])}" data-language-choice="{code}">'
         f'<span class="language-code">{e(meta["label"])}</span>'
@@ -461,7 +512,21 @@ def render_web_site(lang):
 <title>{e(title)}</title>
 <meta name="theme-color" content="#05080f">
 <meta name="description" content="{e(t['cover_lead'])}">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="{canonical}">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="assets/site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{e(brand)}">
+<meta property="og:title" content="{e(title)}">
+<meta property="og:description" content="{e(t['cover_lead'])}">
+<meta property="og:url" content="{canonical}">
+<meta property="og:image" content="{social_image}">
+<meta property="og:locale" content="{og_locales[lang]}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{e(title)}">
+<meta name="twitter:description" content="{e(t['cover_lead'])}">
+<meta name="twitter:image" content="{social_image}">
 {language_alternates}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -499,6 +564,7 @@ def render_web_site(lang):
 </div>
 
 <script id="profile-config" type="application/json">{profile_json}</script>
+<script id="organization-schema" type="application/ld+json">{schema_json}</script>
 <script src="assets/docx.iife.js"></script>
 <script src="assets/app.js"></script>
 <script>
@@ -531,6 +597,67 @@ def render_web_site(lang):
 </script>
 
 </body></html>"""
+
+
+def write_seo_files():
+    """Write crawler directives, multilingual sitemap and web manifest."""
+    sitemap_entries = []
+    for code, meta in LANGUAGES.items():
+        page_url = f"{PUBLIC_BASE_URL}/{meta['html'] if code != 'en' else ''}"
+        alternates = "".join(
+            f'<xhtml:link rel="alternate" hreflang="{alt_code}" '
+            f'href="{PUBLIC_BASE_URL}/{alt_meta["html"] if alt_code != "en" else ""}"/>'
+            for alt_code, alt_meta in LANGUAGES.items()
+        )
+        alternates += (
+            f'<xhtml:link rel="alternate" hreflang="x-default" '
+            f'href="{PUBLIC_BASE_URL}/"/>'
+        )
+        sitemap_entries.append(
+            f"<url><loc>{html.escape(page_url)}</loc>"
+            f"{alternates}"
+            f"<lastmod>{date.today().isoformat()}</lastmod></url>"
+        )
+    sitemap = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+        'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+        + "\n".join(sitemap_entries)
+        + "\n</urlset>\n"
+    )
+    robots = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin\n"
+        "Disallow: /api/admin/\n"
+        f"Sitemap: {PUBLIC_BASE_URL}/sitemap.xml\n"
+    )
+    brand = BRAND_NAME or language_text("en")["descriptor"]
+    manifest = json.dumps(
+        {
+            "name": brand,
+            "short_name": brand[:24],
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#05080f",
+            "theme_color": "#05080f",
+            "icons": [
+                {
+                    "src": "/assets/favicon.svg",
+                    "sizes": "any",
+                    "type": "image/svg+xml",
+                    "purpose": "any",
+                }
+            ],
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+    (SITE_DIR / "robots.txt").write_text(robots, encoding="utf-8")
+    (SITE_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+    (SITE_DIR / "assets" / "site.webmanifest").write_text(
+        manifest, encoding="utf-8"
+    )
 
 
 # --------------------------------------------------------------------------- build execution
@@ -611,6 +738,7 @@ async def build(preview=False):
                 "version": 2,
                 "lang": lang,
                 "brand": admin_store.get("brand", ""),
+                "logo": admin_store.get("logo", ""),
                 "contacts": admin_store.get("contacts", {}),
                 "products": language_data.get("products", []),
                 "text": language_data.get("text", {}),
@@ -621,6 +749,7 @@ async def build(preview=False):
                 "version": profile_data["version"],
                 "lang": lang,
                 "brand": profile_data["brand"],
+                "logo": profile_data["logo"],
                 "contacts": profile_data["contacts"],
                 "products": profile_data["products"],
             }
@@ -628,6 +757,7 @@ async def build(preview=False):
             json.dumps(published, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
+    write_seo_files()
     print(
         f"[WEB] Static site generated in '{SITE_DIR.name}/' "
         f"({len(LANGUAGES)} languages + PDFs + Word)",

@@ -48,6 +48,14 @@ async def run_browser(base_url: str, preview: pathlib.Path) -> None:
         await page.locator("#brand-field").fill("Global Studio")
         await page.locator("#contact-email").fill("hello@global.studio")
         await page.locator("#contact-whatsapp").fill("+49 151 23456789")
+        await page.locator("#brand-logo-file").set_input_files(
+            ROOT / "assets" / "web" / "forma_doc.jpg"
+        )
+        await page.wait_for_function(
+            """() => document.querySelector(
+                '#brand-logo-preview img'
+            )?.src.includes('/uploads/')"""
+        )
         await page.locator("#add-project").click()
         project = page.locator(".admin-project").last
         await project.locator('[data-project-field="name"]').fill("Global Project")
@@ -91,6 +99,7 @@ async def run_browser(base_url: str, preview: pathlib.Path) -> None:
         assert (
             await public_page.locator(".mark span").first.text_content()
         ).strip() == "Global Studio"
+        assert await public_page.locator(".mark .brand-logo").count() >= 1
         assert (
             await public_page.locator(".p6 .title h2").first.text_content()
         ).strip() == "Cómo trabajamos juntos"

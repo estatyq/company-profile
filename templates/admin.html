@@ -59,6 +59,22 @@
             <span>Название студии или ваше имя</span>
             <input id="brand-field" type="text" maxlength="90" autocomplete="organization">
           </label>
+          <div class="brand-logo-editor">
+            <div class="brand-logo-preview" id="brand-logo-preview">
+              <span>Логотип не загружен</span>
+            </div>
+            <div>
+              <b>Логотип бренда</b>
+              <p>Лучше использовать PNG с прозрачным фоном. Подойдёт также JPG или WebP.</p>
+              <div class="brand-logo-actions">
+                <label class="upload-label">
+                  Загрузить логотип
+                  <input id="brand-logo-file" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                </label>
+                <button id="remove-brand-logo" class="remove-logo" type="button">Удалить</button>
+              </div>
+            </div>
+          </div>
           <div class="field-grid">
             <label class="admin-field"><span>WhatsApp</span><input id="contact-whatsapp" type="text" maxlength="250" placeholder="+62 812 3456 7890"></label>
             <label class="admin-field"><span>Telegram</span><input id="contact-telegram" type="text" maxlength="250" placeholder="@username"></label>

@@ -124,6 +124,10 @@
           : typeof published.brand === "string"
             ? published.brand
             : defaults.brand,
+      logo:
+        typeof published.logo === "string"
+          ? published.logo
+          : defaults.logo || "",
       contacts: {
         ...defaults.contacts,
         ...(published.contacts && typeof published.contacts === "object"
@@ -181,6 +185,12 @@
     if (product.imageData) return product.imageData;
     if (product.shot) return `assets/web/${product.shot}`;
     return "";
+  }
+
+  function logoSource(path) {
+    if (!path) return "";
+    if (/^(https?:|data:|blob:)/i.test(path)) return path;
+    return `assets/web/${String(path).replace(/^assets\/web\//, "")}`;
   }
 
   function productCard(product, text) {
@@ -253,10 +263,12 @@
   function renderProfile(nextProfile) {
     profile = nextProfile;
     const brand = profile.brand?.trim() || profile.descriptor;
-    document.querySelectorAll(".mark span").forEach((node) => {
+    document.querySelectorAll(".mark span, .language-gate-brand span").forEach((node) => {
       node.textContent = brand;
     });
     document.title = `${brand} — ${profile.docLabel} (${profile.lang.toUpperCase()})`;
+    renderBrandLogo(profile.logo);
+    updateSeoMetadata(brand);
 
     renderEditableText();
     const coverRow = document.querySelector(".cover .products .row");
@@ -269,6 +281,56 @@
     renumberPages();
     updateWhatsAppButton();
     rescaleDeck();
+  }
+
+  function renderBrandLogo(path) {
+    const source = logoSource(path);
+    document.querySelectorAll(".mark, .language-gate-brand").forEach((host) => {
+      let image = host.querySelector(".brand-logo");
+      if (!source) return;
+      if (!image) {
+        image = document.createElement("img");
+        image.className = "brand-logo";
+        image.alt = "";
+        const svg = host.querySelector("svg");
+        if (svg) svg.replaceWith(image);
+        else host.prepend(image);
+      }
+      image.src = source;
+    });
+    if (source) {
+      const icon = document.querySelector('link[rel="icon"]');
+      if (icon) icon.href = source;
+    }
+  }
+
+  function updateSeoMetadata(brand) {
+    const description = profile.text?.cover_lead || "";
+    const values = {
+      "meta[name='description']": description,
+      "meta[property='og:site_name']": brand,
+      "meta[property='og:description']": description,
+      "meta[name='twitter:description']": description,
+      "meta[property='og:title']": `${brand} — ${profile.docLabel}`,
+      "meta[name='twitter:title']": `${brand} — ${profile.docLabel}`,
+    };
+    Object.entries(values).forEach(([selector, value]) => {
+      const node = document.querySelector(selector);
+      if (node && value) node.setAttribute("content", value);
+    });
+    const schemaNode = document.getElementById("organization-schema");
+    if (!schemaNode) return;
+    try {
+      const schema = JSON.parse(schemaNode.textContent);
+      schema.name = brand;
+      schema.description = description;
+      if (profile.logo) {
+        schema.logo = new URL(logoSource(profile.logo), window.location.href).href;
+      }
+      schemaNode.textContent = JSON.stringify(schema);
+    } catch {
+      // Keep the static structured data if an administrator supplies odd content.
+    }
   }
 
   function renderEditableText() {
@@ -1593,10 +1655,10 @@
   async function init() {
     buildEditor();
     bindEvents();
-    initLanguageChooser();
     const published = await readPublishedProfile();
     profile = mergeProfile(baseConfig, store, published);
     renderProfile(profile);
+    initLanguageChooser();
     window.profileEditor = {
       open: openEditor,
       save: saveEditor,

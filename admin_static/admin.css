@@ -480,6 +480,74 @@ a {
   margin-top: 15px;
 }
 
+.brand-logo-editor {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  margin-top: 15px;
+  padding: 13px;
+  border: 1px solid #dce5ef;
+  border-radius: 12px;
+  background: #f8fbfe;
+}
+
+.brand-logo-preview {
+  width: 170px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 12px;
+  border: 1px dashed #cbd9e8;
+  border-radius: 10px;
+  color: #8495a8;
+  background:
+    linear-gradient(45deg, #eef3f8 25%, transparent 25%),
+    linear-gradient(-45deg, #eef3f8 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #eef3f8 75%),
+    linear-gradient(-45deg, transparent 75%, #eef3f8 75%),
+    #fff;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  background-size: 16px 16px;
+  font-size: 10.5px;
+  text-align: center;
+}
+
+.brand-logo-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.brand-logo-editor b {
+  display: block;
+  color: #40536b;
+  font-size: 12px;
+}
+
+.brand-logo-editor p {
+  margin: 4px 0 10px;
+  color: var(--muted);
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+
+.brand-logo-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.remove-logo {
+  padding: 6px 0;
+  border: 0;
+  color: var(--danger);
+  background: none;
+  cursor: pointer;
+  font-size: 10.5px;
+}
+
 .text-editor {
   display: grid;
   gap: 22px;
@@ -856,6 +924,14 @@ a {
 
   .project-media {
     grid-template-columns: 1fr;
+  }
+
+  .brand-logo-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-logo-preview {
+    width: 100%;
   }
 
   .project-thumb {

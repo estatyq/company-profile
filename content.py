@@ -52,15 +52,15 @@ LANGUAGES = {
 
 DEFAULT_LANGUAGE = "en"
 
-# Name of your studio / personal brand. If empty, a neutral studio title is used.
-BRAND_NAME = ""
+# Name of your studio / personal brand.
+BRAND_NAME = "xcombine"
 
 # Contact info. Empty values are displayed as neat placeholders in the presentation.
 CONTACTS = {
     "whatsapp": "",
     "telegram": "",
     "email": "",
-    "website": "",
+    "website": "https://xcombine.xyz",
 }
 
 # Automatically load private local contacts from 'мои_контакты.txt' if present

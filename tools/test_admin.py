@@ -120,9 +120,32 @@ def main() -> None:
             headers={"X-CSRF-Token": csrf},
         )
         assert response.status_code == 200, response.get_data(as_text=True)
+        content = response.get_json()["content"]
+
+        logo = io.BytesIO(
+            (ROOT / "assets" / "web" / "forma_doc.jpg").read_bytes()
+        )
+        response = client.post(
+            "/api/admin/logo",
+            data={"logo": (logo, "logo.png")},
+            headers={"X-CSRF-Token": csrf},
+            content_type="multipart/form-data",
+        )
+        assert response.status_code == 200, response.get_data(as_text=True)
+        logo_path = response.get_json()["logo"]
+        assert logo_path.endswith(".png")
+        assert (site / "assets" / "web" / logo_path).exists()
+        content["logo"] = logo_path
+        response = client.put(
+            "/api/admin/content",
+            json=content,
+            headers={"X-CSRF-Token": csrf},
+        )
+        assert response.status_code == 200
 
         profile = json.loads((site / "profile-en.json").read_text(encoding="utf-8"))
         assert profile["brand"] == "Test Studio"
+        assert profile["logo"] == logo_path
         assert profile["contacts"]["email"] == "hello@example.com"
         assert any(product["id"] == "new-project" for product in profile["products"])
         assert profile["text"]["cover_title_a"] == "Designed for growing teams"
@@ -143,6 +166,12 @@ def main() -> None:
         assert client.get("/id.html").status_code == 200
         assert client.get("/assets/app.js").status_code == 200
         assert client.get("/profile-en.json").get_json()["brand"] == "Test Studio"
+        manifest = client.get("/assets/site.webmanifest").get_json()
+        assert manifest["name"] == "Test Studio"
+        assert manifest["icons"][0]["src"].endswith(".png")
+        robots = client.get("/robots.txt").get_data(as_text=True)
+        assert "Sitemap: https://xcombine.xyz/sitemap.xml" in robots
+        assert client.get("/sitemap.xml").status_code == 200
 
         response = client.post(
             "/admin/logout",

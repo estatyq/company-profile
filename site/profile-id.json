@@ -1,12 +1,13 @@
 {
   "version": 1,
   "lang": "id",
-  "brand": "Independent Software Studio",
+  "brand": "xcombine",
+  "logo": "",
   "contacts": {
     "whatsapp": "",
     "telegram": "",
     "email": "",
-    "website": ""
+    "website": "https://xcombine.xyz"
   },
   "products": [
     {

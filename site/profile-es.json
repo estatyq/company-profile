@@ -1,12 +1,13 @@
 {
   "version": 1,
   "lang": "es",
-  "brand": "Estudio independiente de software",
+  "brand": "xcombine",
+  "logo": "",
   "contacts": {
     "whatsapp": "",
     "telegram": "",
     "email": "",
-    "website": ""
+    "website": "https://xcombine.xyz"
   },
   "products": [
     {

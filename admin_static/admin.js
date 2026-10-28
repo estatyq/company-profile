@@ -136,6 +136,16 @@
       document.getElementById(`contact-${kind}`).value =
         content.contacts?.[kind] || "";
     }
+    renderBrandLogoAdmin();
+  }
+
+  function renderBrandLogoAdmin() {
+    const preview = document.getElementById("brand-logo-preview");
+    if (!preview) return;
+    const source = imageUrl(content.logo);
+    preview.innerHTML = source
+      ? `<img src="${escapeHtml(source)}" alt="Логотип ${escapeHtml(content.brand || "")}">`
+      : "<span>Логотип не загружен</span>";
   }
 
   function collectIdentity() {
@@ -404,6 +414,31 @@
     }
   }
 
+  async function uploadBrandLogo(file) {
+    const input = document.getElementById("brand-logo-file");
+    const form = new FormData();
+    form.append("logo", file);
+    input.disabled = true;
+    try {
+      const response = await fetch("/api/admin/logo", {
+        method: "POST",
+        headers: { "X-CSRF-Token": csrf },
+        body: form,
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "Не удалось загрузить логотип.");
+      content.logo = data.logo;
+      renderBrandLogoAdmin();
+      markDirty();
+      showToast("Логотип загружен");
+    } catch (error) {
+      showToast(error.message || "Ошибка загрузки логотипа", true);
+    } finally {
+      input.disabled = false;
+      input.value = "";
+    }
+  }
+
   async function saveContent() {
     const button = document.getElementById("save-content");
     syncVisibleState();
@@ -492,6 +527,19 @@
         const file = event.target.files?.[0];
         const project = event.target.closest(".admin-project");
         if (file && project) await uploadImage(project, file);
+      });
+    document
+      .getElementById("brand-logo-file")
+      ?.addEventListener("change", async (event) => {
+        const file = event.target.files?.[0];
+        if (file) await uploadBrandLogo(file);
+      });
+    document
+      .getElementById("remove-brand-logo")
+      ?.addEventListener("click", () => {
+        content.logo = "";
+        renderBrandLogoAdmin();
+        markDirty();
       });
     document.getElementById("password-form")?.addEventListener("submit", changePassword);
     window.addEventListener("beforeunload", (event) => {

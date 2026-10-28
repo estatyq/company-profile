@@ -3,6 +3,21 @@
   max-width: calc(100vw - 24px);
 }
 
+.mark .brand-logo {
+  width: auto;
+  max-width: 112px;
+  height: 24px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.language-gate-brand .brand-logo {
+  width: auto;
+  max-width: 132px;
+  height: 30px;
+  object-fit: contain;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

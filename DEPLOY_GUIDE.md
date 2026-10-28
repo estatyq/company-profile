@@ -102,6 +102,30 @@ python tools\check_languages.py
 
 Готовые статические версии также создаются командой `python build.py` в папках `output/` и `site/`.
 
+## Поисковая индексация
+
+Сайт публикует:
+
+- `https://xcombine.xyz/robots.txt`;
+- `https://xcombine.xyz/sitemap.xml`;
+- canonical-ссылки для каждого языка;
+- hreflang-связи между пятью языковыми версиями;
+- Open Graph и Twitter-разметку;
+- структурированные данные `ProfessionalService`.
+
+Панель `/admin` и её API закрыты от индексации через `robots.txt`.
+
+После публикации добавьте сайт в поисковые системы:
+
+1. **Google Search Console** → Add property → Domain → `xcombine.xyz`.
+2. Подтвердите домен через DNS TXT-запись в Cloudflare.
+3. Откройте **Sitemaps** и добавьте `sitemap.xml`.
+4. Используйте **URL Inspection** для `https://xcombine.xyz/`.
+5. В **Bing Webmaster Tools** импортируйте сайт из Google Search Console или добавьте его вручную.
+6. При желании добавьте `xcombine.xyz` в Яндекс Вебмастер.
+
+Cloudflare не должен блокировать поисковых роботов правилами WAF или Bot Fight Mode. В robots-файле уже разрешён обход публичных страниц.
+
 ## Публикация в интернете
 
 Для `/admin` нужен Python-сервер. Обычный статический хостинг не сохранит изменения, поскольку браузер не имеет доступа к файлам сервера.
